@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/personalStyle.css"/>
+		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="css/login.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	</head>
+
+	<body class="mui-fullscreen">
+		<!--页面主结构开始-->
+		<div id="app" class="mui-views">
+			<div class="mui-view">
+				<div class="mui-navbar">
+				</div>
+				<div class="mui-pages">
+				</div>
+			</div>
+		</div>
+		
+		<!--我的主页开始-->
+		<div id="my" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav zak-header">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left zak-header-item">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+		    	<h1 class="mui-title zak-header-item">我的</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+				    	<style type="text/css">
+				    		.mui-table-view{margin-top: 20px;}
+				    	</style>
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<a href="#changeTx" class="mui-navigate-right">
+									<span>
+										<img class="mui-media-object mui-pull-left" src="images/logo.png" width="40px">
+									</span>
+									わたし
+									<p>15371829847</p>
+								</a>
+							</li>
+						</ul>
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								<a href="#changePhone" class="mui-navigate-right">
+									账号
+									<i class="mui-pull-right update">15371829847</i>
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a href="#username" class="mui-navigate-right">
+									昵称
+									<i class="mui-pull-right update">わたし</i>
+								</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a href="#password" class="mui-navigate-right">
+									密码
+									<i class="mui-pull-right update">&bull;&bull;&bull;&bull;&bull;&bull;</i>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--我的主页结束-->
+		
+			
+		<!--修改账号开始-->
+		<div id="changePhone" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav zak-header">
+				<button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left zak-header-item">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+		    	<h1 class="mui-title zak-header-item">修改账号</h1>
+		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">下一步</button>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<form class="mui-input-group">
+							<div class="mui-input-row">
+								<input id='code' type="number" class="mui-input-clear mui-input" placeholder="请输入验证码">
+							</div>
+						</form>
+						<div class="mui-content-padded">
+							<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">获取验证码</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--修改账号结束-->
+		
+		<!--修改账号2开始-->
+		<div id="changePhone2" class="mui-page feedback">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav zak-header">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left zak-header-item">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+		    	<h1 class="mui-title zak-header-item">修改账号</h1>
+		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll">
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+							<input id='account' type="tel" class="mui-input-clear mui-input" placeholder="请输入新手机号">
+						</div>
+						<div class="mui-input-row">
+							<input id='code' type="number" maxlength="6" class="mui-input-clear mui-input" placeholder="请输入验证码">
+						</div>
+					</form>
+					<div class="mui-content-padded">
+						<button id="reg" class="mui-btn mui-btn-block mui-btn-primary">获取验证码</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--修改账号2结束-->
+
+		<!--修改昵称开始-->
+		<div id="username" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav zak-header">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left zak-header-item">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+		    	<h1 class="mui-title zak-header-item">修改昵称</h1>
+		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<form class="mui-input-group">
+							<div class="mui-input-row">
+								<input id='account' type="text" class="mui-input-clear mui-input" value="わたし">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--修改昵称结束-->
+		
+		<!--修改密码开始-->
+		<div id="password" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav zak-header">
+				<button type="button" class="mui-left mui-btn mui-btn-link mui-btn-nav mui-pull-left zak-header-item mui-action-back">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+		    	<h1 class="mui-title zak-header-item">修改密码</h1>
+		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<form class="mui-input-group">
+							<div class="mui-input-row">
+								<input id='account' type="password" class="mui-input-clear mui-input" placeholder="请输入原密码" />
+							</div>
+							<div class="mui-input-row">
+								<input id='account' type="password" class="mui-input-clear mui-input" placeholder="请输入新密码" />
+							</div>
+							<div class="mui-input-row">
+								<input id='account' type="password" class="mui-input-clear mui-input" placeholder="请再次输入新密码" />
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--修改密码结束-->
+		
+		<!--修改头像开始-->
+		<div id="changeTx" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav zak-header">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left zak-header-item">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+		    	<h1 class="mui-title zak-header-item">我的头像</h1>
+		    	<a href="javascript:;" class="mui-icon mui-icon-bars mui-pull-right zak-header-item" id="zak-menu"></a>
+			</div>
+			<style type="text/css">
+				.zak-userpic{height: 100%;width: 100%;background-color: rgba(0,0,0,0.6);display: flex;justify-content: center;align-items: center;}
+				.zak-userpic img{margin-top: -10%; width: 80%;}
+			</style>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="zak-userpic">
+						<img src="images/logo.png" alt="" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--修改头像结束-->
+		
+		
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src='js/feedback.js'></script>
+	<script src='libs/jquery.min.js'></script>
+	<script>
+		
+		//初始化单页view
+		var viewApi = mui('#app').view({
+			defaultPage: '#my'
+		});
+		(function($) {
+			$.init();
+			
+			$.plusReady(function(e) {
+				var menu = document.getElementById("zak-menu");
+				menu.addEventListener("tap", function(e) {
+					page.imgUp();
+				});
+				var page = {
+					imgUp: function() {
+						plus.nativeUI.actionSheet({
+							cancel: "取消",
+							buttons: [
+								{title: "拍照"},
+								{title: "从相册选择"}
+							]
+						}, function(e) {
+							switch(e.index) {
+								case 1: clickCamera(); break;
+								case 2: clickGallery(); break;
+							}
+						});
+					}
+				}
+				
+				
+				
+				//相册选择
+				function clickGallery() {						
+					console.log("从相册选择照片");
+				}
+				
+				//拍照
+				function clickCamera() {  
+			        console.log("拍照");
+			    };
+			});
+			
+		}(mui));
+		
+		
+	</script>
+
+</html>

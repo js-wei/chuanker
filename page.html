@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	</head>
+
+	<body>
+		<!--下拉刷新容器-->
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+			    <!--数据列表-->
+			    <ul class="mui-table-view mui-table-view-chevron zak-table-view zak-table-view-chevron">
+			      
+			    </ul>
+			</div>
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#refreshContainer',
+					down: {
+						height: 50,
+						auto: true,
+						contentdown: "下来可以刷新",
+						contentover: "释放刷新",
+						contentrefresh: "刷新中...",
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '',
+						contentnomore:'已经没有了哦',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				var table = document.body.querySelector('.mui-table-view');
+				var cells = document.body.querySelectorAll('.mui-table-view-cell');
+				for (var i = cells.length, len = i + 3; i < len; i++) {
+					var li = document.createElement('li');
+					li.className = 'mui-table-view-cell mui-media zak-table-view-cell';
+					li.innerHTML = refreshHtml();
+					//下拉刷新，新纪录插到最前面；
+					table.insertBefore(li, table.firstChild);
+				}
+				mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+			}
+			
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+				var table = document.body.querySelector('.mui-table-view');
+				var cells = document.body.querySelectorAll('.mui-table-view-cell');
+				for (var i = cells.length, len = i + 20; i < len; i++) {
+					var li = document.createElement('li');
+					li.className = 'mui-table-view-cell mui-media zak-table-view-cell';
+					li.innerHTML = refreshHtml();
+					table.appendChild(li);
+				}
+			}
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#refreshContainer').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#refreshContainer').pullRefresh().pullupLoading();
+				});
+			}
+			
+			var refreshHtml = function() {
+				var html = '\
+				<a href="content.html">\
+			        <img class="mui-media-object mui-pull-left new-rem-pic" src="images/title.jpg" />\
+			        <div class="mui-media-body">\
+			        	从女警到网红 她凭的是颜值更是身材\
+			            <p class="mui-ellipsis">\
+			            	<time datetime="2017-01-11">2017-01-11</time>\
+			            	<span>77 评论</span>\
+			            </p>\
+			        </div>\
+			    </a>';
+				return html;
+			}
+			
+			mui('.mui-table-view').on('tap','a',function() {
+				mui.openWindow({
+					url: this.href,
+					id: this.href,
+					show: {
+						aniShow: 'zoom-fade-out',
+						duration: 350
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>
