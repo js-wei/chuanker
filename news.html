@@ -6,47 +6,37 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
 	</head>
-
-	<body>
+	<body  ng-app="myApp" ng-controller="newsCtrl">
 		<header class="mui-bar mui-bar-nav zak-header">
-		    <h1 class="mui-title zak-header-item">扎客</h1>
+		   
 		</header>
-		
 		<div class="mui-content">
 			<!-- 导航选项卡 -->
-			<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+			<div class=" mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 			    <div class="mui-scroll zak-control-item">
-			        <a class="mui-control-item mui-active">推荐</a>
-			        <a class="mui-control-item">热点</a>
-			        <a class="mui-control-item">北京</a>
-			        <a class="mui-control-item">社会</a>
-			        <a class="mui-control-item">娱乐</a>
-			        <a class="mui-control-item">科技</a>
-			   </div>
+				
+		  		</div>
 		  	</div>
 		  	<!--轮播图-->
 			<div id="slider" class="mui-slider" >
 				<div class="mui-slider-group mui-slider-loop">
-			    	
 			    	<div class="mui-slider-item mui-slider-item-duplicate">
 				    	<a href="#">
 				        	<img src="images/pic2.jpg">
 				    	</a>
 				    </div>
-				   
 				    <div class="mui-slider-item">
 					    <a href="#">
 					        <img src="images/pic1.jpg">
 					    </a>
 				    </div>
-				
 				    <div class="mui-slider-item">
 					    <a href="#">
 					        <img src="images/pic2.jpg">
 					    </a>
 				    </div>
-				    
 				    <div class="mui-slider-item mui-slider-item-duplicate">
 					    <a href="#">
 					        <img src="images/pic1.jpg">
@@ -60,9 +50,9 @@
 			</div>
 			<!--子页面数据-->
 		</div>
-		
-		
 		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.0.3.min.js" type="text/javascript" charset="utf-8"></script>
+		
 		<script type="text/javascript">
 			mui.init({
 				subpages: [{
@@ -88,8 +78,38 @@
 						duration: 350
 					}
 				});
+			});		
+		</script>
+		<script id="title" type="text/html">
+			 <h1 class="mui-title zak-header-item">{{ site.title }}</h1>
+		</script>
+		<!--导航栏目模板-->
+		<script id="column" type="text/html">
+		   {{# for(var i = 0, len = d.length; i < len; i++){ }}
+				{{#  if(i === 0){ }}
+				  <a class="mui-control-item mui-active">{{ d[i].title }}</a>
+				{{#  }else{ }}
+				  <a class="mui-control-item">{{ d[i].title }}</a>
+				{{# }}}
+			{{# } }}
+		</script>
+		<script type="text/javascript">
+			var site,column;
+			$.getJSONP('http://iboke.com/index/publish/get_site',function(data){
+				site = result.data;
+				console.log(site);
+                var gettpl = $('#title').html();
+				laytpl(gettpl).render(site, function(html){
+					$('.zak-header').html(html);
+				});
+			});
+			$.getJSONP('http://iboke.com/index/publish/get_colunm',function(result){
+				column = result.data;
+				var gettpl = $('#column').html();
+				laytpl(gettpl).render(column, function(html){
+					$('.zak-control-item').html(html);
+				});
 			});
 		</script>
 	</body>
-
 </html>
