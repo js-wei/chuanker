@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -8,34 +7,46 @@
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<link rel="stylesheet" type="text/css" href="css/content.css"/>
+		<script src="js/jquery-2.0.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
+		<script id="content" type="text/html">
+			<div class="content-title">
+				<h1>{{article.title}}</h1>
+			</div>
+			<!-- 新闻内容 -->
+			<div id="content" class="mui-content-padded">
+				{{article.content}}
+			</div>
+		</script>
+		<script id="title" type="text/html">
+			 <h1 class="mui-title zak-header-item">{{site.title}}</h1>
+		</script>
+		<script type="text/javascript">
+			$.getJSONP('http://iboke.com/index/publish/get_site',function(result){
+				site = result.data;
+				laytpl($('#title').html()).render(site, function(html){
+					$('.zak-header').append(html);
+				});
+			});
+			$.getJSONP($.request('url'),function(result){
+				article = result.article;
+				laytpl($('#content').html()).render(article, function(html){
+					$('#zak-content').html(html);
+				});
+			});
+		</script>
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
 		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left zak-header-item"></a>
 		    <a href="#share" class="mui-icon-bars mui-icon mui-icon-left-nav mui-pull-right zak-header-item"></a>
-		    <h1 class="mui-title zak-header-item">扎客</h1>
+		    
 		</header>
 		<div class="mui-content">
-		    <div class="content-title">
-				<h1>从女警到网红 她凭的是颜值更是身材</h1>
-			</div>
-			<!-- 新闻内容 -->
-			<div id="content" class="mui-content-padded">
-				<p>这是图片放大预览示例，点击如下图片体验全屏预览功能</p>
-				<p>
-					<img src="images/pic2.jpg" />
-				</p>
-				<p>图片全屏后，双击或双指缩放均可对图片进行放大、缩小操作，左右滑动可查看同组(data-preview-group相同的图片为一组)其它图片，点击会关闭预览</p>
-				<p>
-					<img src="images/qrcode.png" />
-				</p>
-				<p>第三张图片，纯粹为了占位： </p>
-				<p>
-					<img src="images/title.jpg" />
-				</p>
-			</div>
-			
+			<!--内容区-->
+		    <div id="zak-content">
+		    	
+		    </div>
 			<!--评论区-->
 			<div class="content-comment">
 				<!--发表评论-->
@@ -156,7 +167,7 @@
 		<script src="js/mui.zoom.js"></script>
 		<script src="js/mui.previewimage.js"></script>
 		<script>
-		mui.init();
+			mui.init();
 			mui.previewImage();
 			var img = document.getElementById("content").getElementsByTagName("img");
 			for (var i = 0; i < img.length; i++) {
