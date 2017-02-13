@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -9,7 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<link rel="stylesheet" type="text/css" href="css/reg.css"/>
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
 		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left zak-header-item"></a>
@@ -20,7 +18,7 @@
 				<div class="mui-input-row mui-table-view-cell reg-account">
 					<label>账号</label>
 					<input id='account' type="tel" class="mui-input-clear mui-input" placeholder="请输入手机号">
-					<button type="button" class="mui-btn mui-btn-primary">
+					<button type="button" id="sendVerify" class="mui-btn mui-btn-primary">
 						获取验证码
 					</button>
 				</div>
@@ -48,7 +46,8 @@
 				</ol>
 			</div>
 		</div>
-		
+		<script src="js/jquery-2.0.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			(function($, doc) {
@@ -58,7 +57,11 @@
 					var accountInput = doc.getElementById("account");  			//账号输入框对象
 					var firstPwd = doc.getElementById("password");  			//第一次输入密码对象
 					var secondPwd = doc.getElementById("password_confirm");  	//第二次输入密码对象
-					var validateCode = doc.getElementById("code");  			//验证码对象
+					var validateCode = doc.getElementById("code"); 				//验证码对象
+					
+					$('#sendVerify').on('click',function(){
+						console.log(1);
+					});
 					
 					regBtn.addEventListener("tap", function() {
 						var regInfo = {
@@ -107,14 +110,11 @@
 						}
 						//提交数据
 						$.post("url", regInfo, function(result) {
-							//...
+							
 						}, 'json');
 					});
-					
-					
 				});
 			}(mui, document));
 		</script>
 	</body>
-
 </html>
