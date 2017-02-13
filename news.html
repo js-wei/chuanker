@@ -35,10 +35,10 @@
 		<!--导航栏目模板-->
 		<script id="column" type="text/html">
 		    {{# for(var i = 0, len = d.length; i < len; i++){ }}
-				{{#  if(i === 0){ }}
-				  <a class="mui-control-item mui-active">{{d[i].title}}</a>
+				{{#  if(d[i].active === 1){ }}
+				  <a class="mui-control-item mui-active" href="news.html?id={{d[i].id}}" data-role="{{d[i].id}}">{{d[i].title}}</a>
 				{{#  }else{ }}
-				  <a class="mui-control-item">{{d[i].title}}</a>
+				  <a class="mui-control-item" href="news.html?id={{d[i].id}}" data-role="{{d[i].id}}">{{d[i].title}}</a>
 				{{# }}}
 			{{# } }}
 		</script>
@@ -70,25 +70,10 @@
 			{{# } }}
 		</script>
 		<script type="text/javascript">
-			$.JSONP('http://m.jswei.cn/index/publish/get_site',{name:'魏巍',age:18},function(){
-				
-			});
-		
+			var id = $.request('id')!=null?$.request('id'):0;
+			console.log(id);
 			var site,column,carousel,indicator;
-			$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
-				site = result.data;
-                var gettpl = $('#title').html();
-				laytpl(gettpl).render(site, function(html){
-					$('.zak-header').html(html);
-				});
-			});
-			$.getJSONP('http://m.jswei.cn/index/publish/get_colunm',function(result){
-				column = result.data;
-				var gettpl = $('#column').html();
-				laytpl(gettpl).render(column, function(html){
-					$('.zak-control-item').html(html);
-				});
-			});
+			
 			$.getJSONP('http://m.jswei.cn/index/publish/get_carousel',function(result){
 				carousel = result.data;
 				indicator = carousel.length-2;
@@ -98,14 +83,30 @@
 				laytpl($('#indicator').html()).render(indicator, function(html){
 					$('.zak-indicator').html(html);
 				});
-				//mui('#slider').slider().refresh();
 				mui('.mui-slider').slider({
-				  interval:2500
+				  interval:5000
 				});
 			});
+			
+			$.getJSONP('http://m.jswei.cn/index/publish/get_colunm?id='+id,function(result){
+				column = result.data;
+				var gettpl = $('#column').html();
+				laytpl(gettpl).render(column, function(html){
+					$('.zak-control-item').html(html);
+				});
+			});
+			$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
+				site = result.data;
+                var gettpl = $('#title').html();
+				laytpl(gettpl).render(site, function(html){
+					$('.zak-header').html(html);
+				});
+			});
+			
+			console.log(id);
 			mui.init({
 				subpages: [{
-					url: "page.html",
+					url: "page.html?id="+id,
 					id: "page",
 					styles: {
 						top: "267px",
@@ -113,16 +114,27 @@
 					}
 				}]
 			});
-			mui('.mui-table-view').on('tap','a',function() {
-				mui.openWindow({
-					url: this.href,
-					id: this.href,
-					show: {
-						aniShow: 'zoom-fade-out',
-						duration: 350
-					}
+			mui.plusReady(function() {
+				$(document).on('click','.zak-control-item>a',function(e){
+					var list =  "page.html?id="+id;
+					var addMemCont=plus.webview.getWebviewById("page"); //根据ID获取子页面
+
+　　　　　　　　		//var subPages=plus.webview.currentWebview().children();//获取当前页面所有的子页面;
+　　　　　　　　		//var addmemCont=subPages[0]; 根据索引或缺子页面
+                    //$.fire(addMemCont,'postMember', null); // $.fire(目标页面,子页面的函数,要传的值)
+					 plus.webview.show(list,"fade-in",100)  //fade-in淡入，100毫秒
 				});
-			});	
+			 	mui('.mui-table-view').on('tap','a',function() {
+					mui.openWindow({
+						url: this.href,
+						id: this.href,
+						show: {
+							aniShow: 'zoom-fade-out',
+							duration: 350
+						}
+					});
+				});	
+			});
 		</script>
 	</body>
 </html>

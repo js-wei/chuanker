@@ -1,172 +1,172 @@
 {
-	"index.html": {
-		"resources": [
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"news.html"
-		],
-		"refer": [
-			"message.html",
-			"news.html",
-			"personal.html",
-			"my.html"
-		]
-	},
-	"news.html": {
-		"resources": [
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"css/style.css",
-			"images/pic2.jpg",
-			"images/pic1.jpg",
-			"page.html"
-		],
-		"refer": [
-			"page.html"
-		]
-	},
-	"message.html": {
-		"resources": [
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"css/style.css",
-			"images/logo.png"
-		]
-	},
-	"personal.html": {
-		"resources": [
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"css/style.css",
-			"images/logo.png",
-			"login.html",
-			"js/feedback.js",
-			"js/mui.view.js",
-			"css/feedback.css",
-			"css/personalStyle.css",
-			"css/login.css",
-			"css/reg.css",
-			"libs/jquery.min.js"
-		],
-		"refer": [
-			"login.html"
-		]
-	},
-	"page.html": {
-		"resources": [
-			"images/title.jpg",
-			"js/mui.min.js",
-			"css/mui.min.css",
-			"css/style.css"
-		],
-		"refer": [
-			"content.html"
-		]
-	},
-	"content.html": {
-		"resources": [
-			"images/qrcode.png",
-			"js/mui.zoom.js",
-			"css/content.css",
-			"js/mui.previewimage.js",
-			"images/logo.png",
-			"images/title.jpg",
-			"js/mui.min.js",
-			"images/pic2.jpg",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"css/style.css"
-		]
-	},
-	"login.html": {
-		"resources": [
-			"css/content.css",
-			"js/mui.min.js",
-			"css/login.css",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"css/style.css",
-			"reg.html",
-			"forget_password.html"
-		],
-		"refer": [
-			"reg.html",
-			"forget_password.html"
-		]
-	},
-	"reg.html": {
-		"resources": [
-			"css/reg.css",
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"css/style.css",
-			"login.html"
-		],
-		"refer": [
-			"login.html"
-		]
-	},
-	"my.html": {
-		"refer": [
-			"personal.html",
-			"login.html",
-			"message.html",
-			"dynamic.html",
-			"fans.html",
-			"flow.html"
-		],
-		"resources": [
-			"fonts/mui.ttf",
-			"images/logo.png",
-			"js/mui.min.js",
-			"css/mui.min.css",
-			"css/style.css",
-			"personal.html"
-		]
-	},
-	"forget_password.html": {
-		"resources": [
-			"css/feedback.css",
-			"css/personalStyle.css",
-			"js/feedback.js",
-			"js/mui.view.js",
-			"login.html"
-		],
-		"refer": [
-			"login.html"
-		]
-	},
-	"dynamic.html": {
-		"resources": [
-			"fonts/mui.ttf",
-			"css/mui.css",
-			"images/logo.png",
-			"js/mui.min.js",
-			"css/mui.min.css",
-			"css/style.css"
-		]
-	},
-	"fans.html": {
-		"resources": [
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"images/logo.png",
-			"css/style.css"
-		]
-	},
-	"flow.html": {
-		"resources": [
-			"images/logo.png",
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"css/style.css"
-		]
-	}
+  "index.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "news.html"
+    ],
+    "refer": [
+      "message.html",
+      "news.html",
+      "personal.html",
+      "my.html"
+    ]
+  },
+  "news.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/pic2.jpg",
+      "images/pic1.jpg",
+      "page.html"
+    ],
+    "refer": [
+      "page.html"
+    ]
+  },
+  "message.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/logo.png"
+    ]
+  },
+  "personal.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/logo.png",
+      "login.html",
+      "js/feedback.js",
+      "js/mui.view.js",
+      "css/feedback.css",
+      "css/personalStyle.css",
+      "css/login.css",
+      "css/reg.css",
+      "libs/jquery.min.js"
+    ],
+    "refer": [
+      "login.html"
+    ]
+  },
+  "page.html": {
+    "resources": [
+      "images/title.jpg",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/style.css"
+    ],
+    "refer": [
+      "content.html"
+    ]
+  },
+  "content.html": {
+    "resources": [
+      "images/qrcode.png",
+      "js/mui.zoom.js",
+      "css/content.css",
+      "js/mui.previewimage.js",
+      "images/logo.png",
+      "images/title.jpg",
+      "js/mui.min.js",
+      "images/pic2.jpg",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css"
+    ]
+  },
+  "login.html": {
+    "resources": [
+      "css/content.css",
+      "js/mui.min.js",
+      "css/login.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "reg.html",
+      "forget_password.html"
+    ],
+    "refer": [
+      "reg.html",
+      "forget_password.html"
+    ]
+  },
+  "reg.html": {
+    "resources": [
+      "css/reg.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "login.html"
+    ],
+    "refer": [
+      "login.html"
+    ]
+  },
+  "my.html": {
+    "refer": [
+      "personal.html",
+      "login.html",
+      "message.html",
+      "dynamic.html",
+      "fans.html",
+      "flow.html"
+    ],
+    "resources": [
+      "fonts/mui.ttf",
+      "images/logo.png",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/style.css",
+      "personal.html"
+    ]
+  },
+  "forget_password.html": {
+    "resources": [
+      "css/feedback.css",
+      "css/personalStyle.css",
+      "js/feedback.js",
+      "js/mui.view.js",
+      "login.html"
+    ],
+    "refer": [
+      "login.html"
+    ]
+  },
+  "dynamic.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "css/mui.css",
+      "images/logo.png",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/style.css"
+    ]
+  },
+  "fans.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "images/logo.png",
+      "css/style.css"
+    ]
+  },
+  "flow.html": {
+    "resources": [
+      "images/logo.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css"
+    ]
+  }
 }

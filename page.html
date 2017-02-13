@@ -39,21 +39,22 @@
 					}
 				}
 			});
+			
+			var id  = $.request('id');
 			//下拉刷新数据
 			function pulldownRefresh() {
-				$.getJSONP('http://m.jswei.cn/news/listing',function(result){
+				$.getJSONP('http://m.jswei.cn/news/listing?id='+id,function(result){
 					laytpl($('#list').html()).render(result.data, function(html){
 						$('.mui-table-view').html(html);
 					});
 				});
 				mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
 			}
-			
 			var count = 0;
 			//上拉刷新数据
 			function pullupRefresh() {
-				mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
-				$.getJSONP('http://m.jswei.cn/news/listing?p='+count,function(result){
+				$.getJSONP('http://m.jswei.cn/news/listing?id='+id+'&p='+count,function(result){
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > result.page_count)); //参数为true代表没有更多数据了。
 					laytpl($('#list').html()).render(result.data, function(html){
 						$('.mui-table-view').html(html);
 					});
@@ -64,7 +65,6 @@
 					setTimeout(function() {
 						mui('#refreshContainer').pullRefresh().pullupLoading();
 					}, 1000);
-
 				});
 			} else {
 				mui.ready(function() {
@@ -81,6 +81,14 @@
 					}
 				});
 			});
+			
+			window.addEventListener('postMember', function() { 
+
+	　　　　//执行的函数}
+	
+	　　　　});
+			
+			
 		</script>
 		<script id="list" type="text/html">
 		    {{# for(var i = 0, len = d.length; i < len; i++){ }}
@@ -90,6 +98,7 @@
 				        <div class="mui-media-body">
 				        	{{d[i].title}}
 				            <p class="mui-ellipsis">
+				            	<span>{{d[i].author}}</span>
 				            	<time datetime="{{d[i].date}}">{{d[i].date}}</time>
 				            	<!--<span>77评论</span>-->
 				            </p>
