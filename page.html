@@ -1,14 +1,14 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<script src="js/jquery-2.0.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
 	</head>
-
 	<body>
 		<!--下拉刷新容器-->
 		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
@@ -19,7 +19,6 @@
 			    </ul>
 			</div>
 		</div>
-		
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init({
@@ -40,37 +39,25 @@
 					}
 				}
 			});
-			
-			/**
-			 * 下拉刷新具体业务实现
-			 */
+			//下拉刷新数据
 			function pulldownRefresh() {
-				var table = document.body.querySelector('.mui-table-view');
-				var cells = document.body.querySelectorAll('.mui-table-view-cell');
-				for (var i = cells.length, len = i + 3; i < len; i++) {
-					var li = document.createElement('li');
-					li.className = 'mui-table-view-cell mui-media zak-table-view-cell';
-					li.innerHTML = refreshHtml();
-					//下拉刷新，新纪录插到最前面；
-					table.insertBefore(li, table.firstChild);
-				}
+				$.getJSONP('http://iboke.com/news/listing',function(result){
+					laytpl($('#list').html()).render(result.data, function(html){
+						$('.mui-table-view').html(html);
+					});
+				});
 				mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
 			}
 			
 			var count = 0;
-			/**
-			 * 上拉加载具体业务实现
-			 */
+			//上拉刷新数据
 			function pullupRefresh() {
 				mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
-				var table = document.body.querySelector('.mui-table-view');
-				var cells = document.body.querySelectorAll('.mui-table-view-cell');
-				for (var i = cells.length, len = i + 20; i < len; i++) {
-					var li = document.createElement('li');
-					li.className = 'mui-table-view-cell mui-media zak-table-view-cell';
-					li.innerHTML = refreshHtml();
-					table.appendChild(li);
-				}
+				$.getJSONP('http://iboke.com/news/listing',function(result){
+					laytpl($('#list').html()).render(result.data, function(html){
+						$('.mui-table-view').html(html);
+					});
+				});
 			}
 			if (mui.os.plus) {
 				mui.plusReady(function() {
@@ -84,23 +71,7 @@
 					mui('#refreshContainer').pullRefresh().pullupLoading();
 				});
 			}
-			
-			var refreshHtml = function() {
-				var html = '\
-				<a href="content.html">\
-			        <img class="mui-media-object mui-pull-left new-rem-pic" src="images/title.jpg" />\
-			        <div class="mui-media-body">\
-			        	从女警到网红 她凭的是颜值更是身材\
-			            <p class="mui-ellipsis">\
-			            	<time datetime="2017-01-11">2017-01-11</time>\
-			            	<span>77 评论</span>\
-			            </p>\
-			        </div>\
-			    </a>';
-				return html;
-			}
-			
-			mui('.mui-table-view').on('tap','a',function() {
+			mui('.mui-table-view').on('tap','a',function(e) {
 				mui.openWindow({
 					url: this.href,
 					id: this.href,
@@ -111,6 +82,21 @@
 				});
 			});
 		</script>
+		<script id="list" type="text/html">
+		    {{# for(var i = 0, len = d.length; i < len; i++){ }}
+				<li class="mui-table-view-cell mui-media zak-table-view-cell">
+					<a href="content.html?url={{d[i].url}}">
+				        <!--<img class="mui-media-object mui-pull-left new-rem-pic" src="images/title.jpg" />-->
+				        <div class="mui-media-body">
+				        	{{d[i].title}}
+				            <p class="mui-ellipsis">
+				            	<time datetime="{{d[i].date}}">{{d[i].date}}</time>
+				            	<!--<span>77评论</span>-->
+				            </p>
+				        </div>
+				    </a>
+				</li>
+			{{# } }}
+		</script>
 	</body>
-
 </html>

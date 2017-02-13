@@ -24,7 +24,6 @@
 	<style type="text/css">
 		.mui-pull-top-pocket{top:90px !important;}
 	</style>
-	
     <script src="js/mui.min.js"></script>
     <script type="text/javascript">
     	mui.init();
@@ -47,17 +46,13 @@
     	var activeTab = subpages[0];
     	mui(".mui-bar-tab").on("tap","a",function() {
     		var targetTab = this.getAttribute("href");
-    		console.log("当前href是" + targetTab);
     		if(targetTab == activeTab) {
     			return;
     		}
     		plus.webview.show(targetTab);
     		plus.webview.hide(activeTab);
-    		
     		activeTab = targetTab;
     	});
-    	
-    	
     </script>
 </body>
 </html>
