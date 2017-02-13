@@ -1,0 +1,10 @@
+(
+	{
+		"site":{
+			"title":"美女",
+			"description":"美女",
+			"keywords":"美女",
+			"url":"http:\/\/iboke.com"
+		}
+	}
+);

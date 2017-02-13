@@ -48,13 +48,13 @@
 		    	{{# if(d[i].duplicate===1){ }}
 			    	<div class="mui-slider-item mui-slider-item-duplicate">
 				    	<a href="{{d[i].url}}">
-				        	<img src="{{d[i].image}}">
+				        	<img src="{{d[i].url}}{{d[i].image}}">
 				    	</a>
 				    </div>
 		    	{{# }else{ }}
 			    	<div class="mui-slider-item">
 					    <a href="{{d[i].url}}">
-					        <img src="{{d[i].image}}">
+					        <img src="{{d[i].url}}{{d[i].image}}">
 					    </a>
 				    </div>
 		    	{{# } }}
@@ -70,24 +70,28 @@
 			{{# } }}
 		</script>
 		<script type="text/javascript">
+			$.JSONP('http://m.jswei.cn/index/publish/get_site',{name:'魏巍',age:18},function(){
+				
+			});
+		
 			var site,column,carousel,indicator;
-			$.getJSONP('http://iboke.com/index/publish/get_site',function(result){
+			$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
 				site = result.data;
                 var gettpl = $('#title').html();
 				laytpl(gettpl).render(site, function(html){
 					$('.zak-header').html(html);
 				});
 			});
-			$.getJSONP('http://iboke.com/index/publish/get_colunm',function(result){
+			$.getJSONP('http://m.jswei.cn/index/publish/get_colunm',function(result){
 				column = result.data;
 				var gettpl = $('#column').html();
 				laytpl(gettpl).render(column, function(html){
 					$('.zak-control-item').html(html);
 				});
 			});
-			$.getJSONP('http://iboke.com/index/publish/get_carousel',function(result){
+			$.getJSONP('http://m.jswei.cn/index/publish/get_carousel',function(result){
 				carousel = result.data;
-				indicator = result.indicator;
+				indicator = carousel.length-2;
 				laytpl($('#carousel').html()).render(carousel, function(html){
 					$('.mui-slider-loop').html(html);
 				});

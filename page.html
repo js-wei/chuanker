@@ -41,7 +41,7 @@
 			});
 			//下拉刷新数据
 			function pulldownRefresh() {
-				$.getJSONP('http://iboke.com/news/listing',function(result){
+				$.getJSONP('http://m.jswei.cn/news/listing',function(result){
 					laytpl($('#list').html()).render(result.data, function(html){
 						$('.mui-table-view').html(html);
 					});
@@ -53,7 +53,7 @@
 			//上拉刷新数据
 			function pullupRefresh() {
 				mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
-				$.getJSONP('http://iboke.com/news/listing',function(result){
+				$.getJSONP('http://m.jswei.cn/news/listing?p='+count,function(result){
 					laytpl($('#list').html()).render(result.data, function(html){
 						$('.mui-table-view').html(html);
 					});

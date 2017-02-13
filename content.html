@@ -22,7 +22,7 @@
 			 <h1 class="mui-title zak-header-item">{{site.title}}</h1>
 		</script>
 		<script type="text/javascript">
-			$.getJSONP('http://iboke.com/index/publish/get_site',function(result){
+			$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
 				site = result.data;
 				laytpl($('#title').html()).render(site, function(html){
 					$('.zak-header').append(html);
