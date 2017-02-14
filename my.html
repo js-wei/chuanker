@@ -1,17 +1,16 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<script src="js/jquery-2.0.3.min.js"></script>
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
-		    <h1 class="mui-title zak-header-item">我</h1>
+		    <h1 class="mui-title zak-header-item">我的</h1>
 		</header>
 		<div class="mui-content">
 			<style type="text/css">
@@ -19,33 +18,35 @@
 			</style>
 		    <ul class="mui-table-view mui-table-view-chevron zak-table-view-chevron">
 				<!-- 登录状态 -->
-				<li class="mui-table-view-cell mui-media">
-					<a href="personal.html" class="mui-navigate-right">
-						<img class="mui-media-object mui-pull-left head-img" src="images/logo.png">
-						<div class="mui-media-body">
-							わたし
-							<p class='mui-ellipsis'>账号:857477061@qq.com</p>
+				<div class="mui-logout">
+					<li class="mui-table-view-cell mui-media">
+						<a href="personal.html" class="mui-navigate-right">
+							<img class="mui-media-object mui-pull-left head-img" src="images/logo.png">
+							<div class="mui-media-body">
+								わたし
+								<p class='mui-ellipsis'>账号:857477061@qq.com</p>
+							</div>
+						</a>
+					</li>
+					<li class="zak-table-view-cell">
+						<div class="mui-bar-tab">
+							<a class="mui-tab-item" href="dynamic.html">
+								<span class="zak-black zak-bold">5</span>
+								<span class="zak-black777 mui-tab-label zak-block">动态</span>
+							</a>
+							<a class="mui-tab-item" href="flow.html">
+								<span class="zak-black zak-bold">0</span>
+								<span class="zak-black777 mui-tab-label zak-block">关注</span>
+							</a>
+							<a class="mui-tab-item" href="fans.html">
+								<span class="zak-black zak-bold">0</span>
+								<span class="zak-black777 mui-tab-label zak-block">粉丝</span>
+							</a>
 						</div>
-					</a>
-				</li>
-				<li class="zak-table-view-cell">
-					<div class="mui-bar-tab">
-						<a class="mui-tab-item" href="dynamic.html">
-							<span class="zak-black zak-bold">5</span>
-							<span class="zak-black777 mui-tab-label zak-block">动态</span>
-						</a>
-						<a class="mui-tab-item" href="flow.html">
-							<span class="zak-black zak-bold">0</span>
-							<span class="zak-black777 mui-tab-label zak-block">关注</span>
-						</a>
-						<a class="mui-tab-item" href="fans.html">
-							<span class="zak-black zak-bold">0</span>
-							<span class="zak-black777 mui-tab-label zak-block">粉丝</span>
-						</a>
-					</div>
-				</li>
+					</li>
+				</div>
 				<!-- 未登录状态 -->
-				<li class="mui-table-view-cell mui-media">
+				<li class="mui-table-view-cell mui-media mui-login">
 					<a href="login.html" style="line-height: 42px;" class="mui-navigate-right">
 						<img class="mui-media-object mui-pull-left head-img" src="images/logo.png">
 						请登录您的账号
@@ -57,30 +58,38 @@
 			</style>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
-					<a href="version.html" class="mui-navigate-right">
+					<a class="mui-navigate-right">
 						关于
 						<i class="mui-pull-right version">V1.0</i>
 					</a>
 				</li>
 			</ul>
-			<ul class="mui-table-view">
+			<ul class="mui-table-view mui-logout">
 				<li class="mui-table-view-cell" style="text-align: center;">
 					<a>退出登录</a>
 				</li>
 			</ul>
 		</div>
-		
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init();
-			mui('.mui-table-view').on('tap','a',function() {
-				mui.openWindow({
-					url: this.href,
-					id: this.href,
-					show: {
-						aniShow: 'zoom-fade-out',
-						duration: 350
-					}
+			mui.getJSON('http://m.jswei.cn/index/user/is_login',function(result){
+				if(result.status==0){
+					$('.mui-logout').addClass('mui-hidden');
+				}else{
+					$('.mui-login').addClass('mui-hidden');
+				}
+			});
+			mui.plusReady(function(){
+				mui('.mui-table-view').on('tap','a',function(){
+					mui.openWindow({
+						url: this.href,
+						id: this.href,
+						show: {
+							aniShow: 'zoom-fade-out',
+							duration: 350
+						}
+					});
 				});
 			});
 		</script>

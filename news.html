@@ -36,9 +36,9 @@
 		<script id="column" type="text/html">
 		    {{# for(var i = 0, len = d.length; i < len; i++){ }}
 				{{#  if(d[i].active === 1){ }}
-				  <a class="mui-control-item mui-active" href="news.html?id={{d[i].id}}" data-role="{{d[i].id}}">{{d[i].title}}</a>
+				  <a class="mui-control-item mui-active" href="page.html?id={{d[i].id}}" data-role="{{d[i].id}}">{{d[i].title}}</a>
 				{{#  }else{ }}
-				  <a class="mui-control-item" href="news.html?id={{d[i].id}}" data-role="{{d[i].id}}">{{d[i].title}}</a>
+				  <a class="mui-control-item" href="page.html?id={{d[i].id}}" data-role="{{d[i].id}}">{{d[i].title}}</a>
 				{{# }}}
 			{{# } }}
 		</script>
@@ -71,7 +71,6 @@
 		</script>
 		<script type="text/javascript">
 			var id = $.request('id')!=null?$.request('id'):0;
-			console.log(id);
 			var site,column,carousel,indicator;
 			
 			$.getJSONP('http://m.jswei.cn/index/publish/get_carousel',function(result){
@@ -102,8 +101,6 @@
 					$('.zak-header').html(html);
 				});
 			});
-			
-			console.log(id);
 			mui.init({
 				subpages: [{
 					url: "page.html?id="+id,
@@ -116,13 +113,11 @@
 			});
 			mui.plusReady(function() {
 				$(document).on('click','.zak-control-item>a',function(e){
-					var list =  "page.html?id="+id;
 					var addMemCont=plus.webview.getWebviewById("page"); //根据ID获取子页面
-
-　　　　　　　　		//var subPages=plus.webview.currentWebview().children();//获取当前页面所有的子页面;
-　　　　　　　　		//var addmemCont=subPages[0]; 根据索引或缺子页面
-                    //$.fire(addMemCont,'postMember', null); // $.fire(目标页面,子页面的函数,要传的值)
-					 plus.webview.show(list,"fade-in",100)  //fade-in淡入，100毫秒
+//                  $.fire(addMemCont,'postMember',{id:id}); // $.fire(目标页面,子页面的函数,要传的值)
+					var url = $(this).attr('href');
+					console.log(url);
+					addMemCont.loadURL(url);
 				});
 			 	mui('.mui-table-view').on('tap','a',function() {
 					mui.openWindow({

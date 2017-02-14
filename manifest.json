@@ -214,7 +214,9 @@
 					"css/style.css",
 					"images/pic2.jpg",
 					"images/pic1.jpg",
-					"page.html"
+					"page.html",
+					"js/laytpl.js",
+					"js/jquery-2.0.3.min.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -254,10 +256,14 @@
 					"images/title.jpg",
 					"js/mui.min.js",
 					"css/mui.min.css",
-					"css/style.css"
+					"css/style.css",
+					"js/laytpl.js",
+					"js/jquery-2.0.3.min.js",
+					"fonts/mui.ttf"
 				],
 				"refer": [
-					"content.html"
+					"content.html",
+					"page.html"
 				],
 				"priority": 0
 			},
@@ -273,7 +279,9 @@
 					"images/pic2.jpg",
 					"fonts/mui.ttf",
 					"css/mui.min.css",
-					"css/style.css"
+					"css/style.css",
+					"js/laytpl.js",
+					"js/jquery-2.0.3.min.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -299,7 +307,9 @@
 					"fonts/mui.ttf",
 					"css/mui.min.css",
 					"css/style.css",
-					"login.html"
+					"login.html",
+					"js/laytpl.js",
+					"js/jquery-2.0.3.min.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -311,7 +321,9 @@
 					"js/mui.min.js",
 					"css/mui.min.css",
 					"css/style.css",
-					"personal.html"
+					"personal.html",
+					"my.html",
+					"js/jquery-2.0.3.min.js"
 				],
 				"refer": [
 					"login.html",

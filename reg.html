@@ -50,71 +50,87 @@
 		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
-			(function($, doc) {
-				$.init();
-				$.plusReady(function() {
-					var regBtn = doc.getElementById("reg");  					//获取注册按钮对象
-					var accountInput = doc.getElementById("account");  			//账号输入框对象
-					var firstPwd = doc.getElementById("password");  			//第一次输入密码对象
-					var secondPwd = doc.getElementById("password_confirm");  	//第二次输入密码对象
-					var validateCode = doc.getElementById("code"); 				//验证码对象
-					
-					$('#sendVerify').on('click',function(){
-						console.log(1);
-					});
-					
-					regBtn.addEventListener("tap", function() {
-						var regInfo = {
-							account: accountInput.value,	//账号
-							password: firstPwd.value,		//密码
-							code: validateCode.value,		//验证码
-						};
-						var regFn = {
-//							emailReg: /^([a-zA-Z0-9])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/,		//邮箱正则
-							telReg: /^1(3|4|5|7|8)\d{9}$/,	//手机号正则
-							pwdReg: /^([0-9a-zA-Z\_\-]){6,16}$/,
-							prompt: function(err) {			//错误提示，err为提示信息
-								return plus.nativeUI.toast(err);
-							}
+			mui.init();
+			mui.plusReady(function() {
+				var accountInput = document.getElementById("account");  			//账号输入框对象
+				var firstPwd = document.getElementById("password");  			//第一次输入密码对象
+				var secondPwd = document.getElementById("password_confirm");  	//第二次输入密码对象
+				var validateCode = document.getElementById("code"); 				//验证码对象
+				
+				$(document).on('blur','#account',function(){
+					$.JSONP('http://m.jswei.cn/index/user/check_username',{username:$(this).val()},function(result){
+						if(result.status==0){
+							mui.toast(result.msg,{ duration:'long', type:'div' });
 						}
-						var secondPwdVal = secondPwd.value;	//第二次输入密码的值
-						if(regInfo.account=='') {			//判断账号为空
-							regFn.prompt("请输入账号");
-							return;
-						}
-						/*
-						 * if(!regInfo.emailReg.test(regInfo.account) || !regInfo.telReg.test(regInfo.account)) {	//账号是否合法
-						 *		regInfo.prompt("账号格式不正确，请重新输入");
-						 *		return;
-						 *	}
-						 */
-						if(!regFn.telReg.test(regInfo.account)) {	//手机号格式
-							regFn.prompt("手机号不正确，请重新输入");
-							return;
-						}
-						if(regInfo.password == '') {	//密码为空
-							regFn.prompt("请输入密码");
-							return;
-						}
-						if(!regFn.pwdReg.test(regInfo.password)) {	//密码格式
-							regFn.prompt("密码格式不正确，请重新输入");
-							return;
-						}
-						if(secondPwdVal != regInfo.password) {		//两次密码不同
-							regFn.prompt("两次输入的密码不一致");
-							return;
-						}
-						if(regInfo.code == '') {
-							regFn.prompt("请输入验证码");
-							return;
-						}
-						//提交数据
-						$.post("url", regInfo, function(result) {
-							
-						}, 'json');
 					});
 				});
-			}(mui, document));
+				$(document).on('click','#sendVerify',function(){
+					var account = $('#account').val();
+					if(account==''){
+						mui.toast('请填写账号');
+					}
+					$.JSONP('http://m.jswei.cn/index/publish/sendSMS',{to:account},function(result){
+						if(result.status==0){
+							mui.toast(result.msg);
+						}
+					});
+				});
+				$(document).on('click','#reg',function(){
+					var regInfo = {
+						username: accountInput.value,	//账号
+						password: firstPwd.value,		//密码
+						comfr_password:secondPwd.value,
+						verify: validateCode.value,		//验证码
+					};
+					var regFn = {
+//							emailReg: /^([a-zA-Z0-9])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/,		//邮箱正则
+						telReg: /^1(3|4|5|7|8)\d{9}$/,	//手机号正则
+						pwdReg: /^([0-9a-zA-Z\_\-]){6,16}$/,
+						prompt: function(err) {			//错误提示，err为提示信息
+							return plus.nativeUI.toast(err);
+						}
+					}
+					var secondPwdVal = regInfo.comfr_password;	//第二次输入密码的值
+					if(regInfo.username=='') {			//判断账号为空
+						regFn.prompt("请输入账号");
+						return;
+					}
+					if(!regFn.telReg.test(regInfo.username)) {	//手机号格式
+						regFn.prompt("手机号不正确，请重新输入");
+						return;
+					}
+					if(regInfo.password == '') {	//密码为空
+						regFn.prompt("请输入密码");
+						return;
+					}
+					if(!regFn.pwdReg.test(regInfo.password)) {	//密码格式
+						regFn.prompt("密码格式不正确，请重新输入");
+						return;
+					}
+					if(secondPwdVal != regInfo.password) {		//两次密码不同
+						regFn.prompt("两次输入的密码不一致");
+						return;
+					}
+					if(regInfo.verify == '') {
+						regFn.prompt("请输入验证码");
+						return;
+					}
+					$.JSONP('http://m.jswei.cn/index/user/register_handler',regInfo,function(result){
+						if(result.status==1){
+							mui.openWindow({
+								url: "login.html",
+								id: "login.html",
+								show: {
+									aniShow: 'zoom-fade-out',
+									duration: 350
+								}
+							});
+						}else{
+							 mui.toast(result.msg,{ duration:'long', type:'div' });
+						}
+					});
+				});
+			});
 		</script>
 	</body>
 </html>

@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
-		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left zak-header-item"></a>
+		    <!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left zak-header-item"></a>-->
 		    <h1 class="mui-title zak-header-item">登录</h1>
 		</header>
 		<div class="mui-content">
@@ -36,25 +36,30 @@
 		
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
-			(function($) {
-				$.init();
-				$.plusReady(function() {
+			(function(m) {
+				m.init();
+				m.plusReady(function() {
 					var loginBtn = document.getElementById("login");
 					var accountInput = document.getElementById("account");
 					var passwordInput = document.getElementById("password");
 					
 					loginBtn.addEventListener("tap", function() {
 						var loginInfo = {
-							account: accountInput.value,
+							username: accountInput.value,
 							password: passwordInput.value
 						};
 						var loginFn = {
+							telReg: /^1(3|4|5|7|8)\d{9}$/,	//手机号正则
 							prompt: function(err) {
 								return plus.nativeUI.toast(err);
 							}
 						}
-						if(loginInfo.account == '') {
+						if(loginInfo.username == '') {
 							loginFn.prompt("请输入账号");
+							return;
+						}
+						if(!loginFn.telReg.test(loginInfo.username)) {	//手机号格式
+							loginFn.prompt("手机号不正确，请重新输入");
 							return;
 						}
 						if(loginInfo.password == '') {

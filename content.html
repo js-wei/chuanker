@@ -14,26 +14,12 @@
 				<h1>{{article.title}}</h1>
 			</div>
 			<!-- 新闻内容 -->
-			<div id="content" class="mui-content-padded">
+			<div id="main-content" class="mui-content-padded">
 				{{article.content}}
 			</div>
 		</script>
 		<script id="title" type="text/html">
 			 <h1 class="mui-title zak-header-item">{{site.title}}</h1>
-		</script>
-		<script type="text/javascript">
-			$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
-				site = result.data;
-				laytpl($('#title').html()).render(site, function(html){
-					$('.zak-header').append(html);
-				});
-			});
-			$.getJSONP($.request('url'),function(result){
-				article = result.article;
-				laytpl($('#content').html()).render(article, function(html){
-					$('#zak-content').html(html);
-				});
-			});
 		</script>
 	</head>
 	<body>
@@ -126,7 +112,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<!--菜单-->
 			<div id="share" class="mui-popover mui-popover-action mui-popover-bottom">
 				<ul class="mui-table-view">
@@ -162,20 +147,31 @@
 				</ul>
 			</div>
 		</div>
-		
 		<script src="js/mui.min.js"></script>
 		<script src="js/mui.zoom.js"></script>
 		<script src="js/mui.previewimage.js"></script>
-		<script>
-			mui.init();
-			mui.previewImage();
-			var img = document.getElementById("content").getElementsByTagName("img");
-			for (var i = 0; i < img.length; i++) {
-				img[i].setAttribute("data-preview-src","");
-				img[i].setAttribute("data-preview-group","1");
-			}
-			
+		<script type="text/javascript">
+			mui.plusReady(function(){
+				mui.init();
+				mui.previewImage();
+				$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
+					site = result.data;
+					laytpl($('#title').html()).render(site, function(html){
+						$('.zak-header').append(html);
+					});
+				});
+				$.getJSONP($.request('url'),function(result){
+					article = result.article;
+					laytpl($('#content').html()).render(article, function(html){
+						$('#zak-content').html(html);
+						var img = document.getElementById("main-content").getElementsByTagName("img");
+						for (var i = 0; i < img.length; i++) {
+							img[i].setAttribute("data-preview-src","");
+							img[i].setAttribute("data-preview-group","1");
+						}
+					});
+				});
+			});
 		</script>
 	</body>
-
 </html>

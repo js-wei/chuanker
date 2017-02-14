@@ -21,74 +21,67 @@
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
-			mui.init({
-				pullRefresh: {
-					container: '#refreshContainer',
-					down: {
-						height: 50,
-						auto: true,
-						contentdown: "下来可以刷新",
-						contentover: "释放刷新",
-						contentrefresh: "刷新中...",
-						callback: pulldownRefresh
-					},
-					up: {
-						contentrefresh: '',
-						contentnomore:'已经没有了哦',
-						callback: pullupRefresh
+			mui.plusReady(function(){
+				mui.init({
+					pullRefresh: {
+						container: '#refreshContainer',
+						down: {
+							height: 50,
+							auto: true,
+							contentdown: "下来可以刷新",
+							contentover: "释放刷新",
+							contentrefresh: "刷新中...",
+							callback: pulldownRefresh
+						},
+						up: {
+							contentrefresh: '',
+							contentnomore:'已经没有了哦',
+							callback: pullupRefresh
+						}
 					}
+				});
+				var id  = $.request('id');
+				//下拉刷新数据
+				function pulldownRefresh() {
+					$.getJSONP('http://m.jswei.cn/news/listing?id='+id,function(result){
+						laytpl($('#list').html()).render(result.data, function(html){
+							$('.mui-table-view').html(html);
+						});
+					});
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
 				}
-			});
-			
-			var id  = $.request('id');
-			//下拉刷新数据
-			function pulldownRefresh() {
-				$.getJSONP('http://m.jswei.cn/news/listing?id='+id,function(result){
-					laytpl($('#list').html()).render(result.data, function(html){
-						$('.mui-table-view').html(html);
+				var count = 0;
+				//上拉刷新数据
+				function pullupRefresh() {
+					$.getJSONP('http://m.jswei.cn/news/listing?id='+id+'&p='+count,function(result){
+						mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > result.page_count)); //参数为true代表没有更多数据了。
+						laytpl($('#list').html()).render(result.data, function(html){
+							$('.mui-table-view').html(html);
+						});
 					});
-				});
-				mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
-			}
-			var count = 0;
-			//上拉刷新数据
-			function pullupRefresh() {
-				$.getJSONP('http://m.jswei.cn/news/listing?id='+id+'&p='+count,function(result){
-					mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > result.page_count)); //参数为true代表没有更多数据了。
-					laytpl($('#list').html()).render(result.data, function(html){
-						$('.mui-table-view').html(html);
+				}
+				if (mui.os.plus) {
+					mui.plusReady(function() {
+						setTimeout(function() {
+							mui('#refreshContainer').pullRefresh().pullupLoading();
+						}, 1000);
 					});
-				});
-			}
-			if (mui.os.plus) {
-				mui.plusReady(function() {
-					setTimeout(function() {
+				} else {
+					mui.ready(function() {
 						mui('#refreshContainer').pullRefresh().pullupLoading();
-					}, 1000);
-				});
-			} else {
-				mui.ready(function() {
-					mui('#refreshContainer').pullRefresh().pullupLoading();
-				});
-			}
-			mui('.mui-table-view').on('tap','a',function(e) {
-				mui.openWindow({
-					url: this.href,
-					id: this.href,
-					show: {
-						aniShow: 'zoom-fade-out',
-						duration: 350
-					}
+					});
+				}
+				mui('.mui-table-view').on('tap','a',function(e) {
+					mui.openWindow({
+						url: this.href,
+						id: this.href,
+						show: {
+							aniShow: 'zoom-fade-out',
+							duration: 350
+						}
+					});
 				});
 			});
-			
-			window.addEventListener('postMember', function() { 
-
-	　　　　//执行的函数}
-	
-	　　　　});
-			
-			
 		</script>
 		<script id="list" type="text/html">
 		    {{# for(var i = 0, len = d.length; i < len; i++){ }}
