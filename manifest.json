@@ -295,9 +295,14 @@
 					"css/mui.min.css",
 					"css/style.css",
 					"reg.html",
-					"forget_password.html"
+					"forget_password.html",
+					"js/jquery-2.0.3.min.js",
+					"js/app.js",
+					"js/mui.enterfocus.js"
 				],
-				"refer": [],
+				"refer": [
+					"my.html"
+				],
 				"priority": 0
 			},
 			"reg.html": {
@@ -309,7 +314,8 @@
 					"css/style.css",
 					"login.html",
 					"js/laytpl.js",
-					"js/jquery-2.0.3.min.js"
+					"js/jquery-2.0.3.min.js",
+					"js/app.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -323,7 +329,8 @@
 					"css/style.css",
 					"personal.html",
 					"my.html",
-					"js/jquery-2.0.3.min.js"
+					"js/jquery-2.0.3.min.js",
+					"js/laytpl.js"
 				],
 				"refer": [
 					"login.html",

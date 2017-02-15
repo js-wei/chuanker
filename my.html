@@ -7,6 +7,7 @@
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<script src="js/jquery-2.0.3.min.js"></script>
+		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
@@ -19,14 +20,8 @@
 		    <ul class="mui-table-view mui-table-view-chevron zak-table-view-chevron">
 				<!-- 登录状态 -->
 				<div class="mui-logout">
-					<li class="mui-table-view-cell mui-media">
-						<a href="personal.html" class="mui-navigate-right">
-							<img class="mui-media-object mui-pull-left head-img" src="images/logo.png">
-							<div class="mui-media-body">
-								わたし
-								<p class='mui-ellipsis'>账号:857477061@qq.com</p>
-							</div>
-						</a>
+					<li class="mui-table-view-cell mui-media zak-info">
+						
 					</li>
 					<li class="zak-table-view-cell">
 						<div class="mui-bar-tab">
@@ -70,16 +65,26 @@
 				</li>
 			</ul>
 		</div>
+		<script id="userInfo" type="text/html">
+			<a href="personal.html" class="mui-navigate-right">
+				{{# if(data.head!=null){ }}
+					<img class="mui-media-object mui-pull-left head-img" src="{{data.head}}">
+				{{# }else{ }}
+					<img class="mui-media-object mui-pull-left head-img" src="images/logo.png">
+				{{# } }}
+				<div class="mui-media-body">
+					{{# if(data.nickname!=null){ }}
+						<span>{{data.nickname}}</span>
+					{{# }else{ }}
+						<span>{{data.username}}</span>
+					{{# } }}
+					<p class='mui-ellipsis'>账号:{{data.username}}</p>
+				</div>
+			</a>
+		</script>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init();
-			mui.getJSON('http://m.jswei.cn/index/user/is_login',function(result){
-				if(result.status==0){
-					$('.mui-logout').addClass('mui-hidden');
-				}else{
-					$('.mui-login').addClass('mui-hidden');
-				}
-			});
 			mui.plusReady(function(){
 				mui('.mui-table-view').on('tap','a',function(){
 					mui.openWindow({
@@ -91,8 +96,25 @@
 						}
 					});
 				});
+				window.addEventListener('userId',function(event){
+			        var id = event.detail.id;
+			        var user = plus.storage.getItem('$users') || '[]';
+			        if(!id){
+						$('.mui-logout').addClass('mui-hidden');
+						$('.mui-login').removeClass('mui-hidden');
+					}else{
+						$('.mui-login').addClass('mui-hidden');
+						$('.mui-logout').removeClass('mui-hidden');
+					}
+			        if(user){
+			        	data = JSON.parse(user);
+			        	laytpl($('#userInfo').html()).render(data, function(html){
+							$('.zak-info').html(html);
+						});
+			        }
+			        
+			    });
 			});
 		</script>
 	</body>
-
 </html>

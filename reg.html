@@ -14,11 +14,11 @@
 		    <h1 class="mui-title zak-header-item">注册</h1>
 		</header>
 		<div class="mui-content">
-		    <form class="mui-input-group">
+		    <div class="mui-input-group">
 				<div class="mui-input-row mui-table-view-cell reg-account">
 					<label>账号</label>
 					<input id='account' type="tel" class="mui-input-clear mui-input" placeholder="请输入手机号">
-					<button type="button" id="sendVerify" class="mui-btn mui-btn-primary">
+					<button type="button" id="sendVerify"  class="mui-btn mui-btn-primary">
 						获取验证码
 					</button>
 				</div>
@@ -34,7 +34,7 @@
 					<label>验证码</label>
 					<input id='code' type="number" class="mui-input-clear mui-input" placeholder="请输入验证码" maxlength="6">
 				</div>
-			</form>
+			</div>
 			<div class="mui-content-padded">
 				<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
 			</div>
@@ -50,6 +50,7 @@
 		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
+			var countdown=60,strat_flag=true;
 			mui.init();
 			mui.plusReady(function() {
 				var accountInput = document.getElementById("account");  			//账号输入框对象
@@ -58,22 +59,40 @@
 				var validateCode = document.getElementById("code"); 				//验证码对象
 				
 				$(document).on('blur','#account',function(){
-					$.JSONP('http://m.jswei.cn/index/user/check_username',{username:$(this).val()},function(result){
+					var val = $(this).val();
+					var telReg = /^1(3|4|5|7|8)\d{9}$/;
+					if(val == ''){
+						mui.toast('请填写账号');
+						return false;
+					}
+					if(!telReg.test(val)){
+						mui.toast('请填写正确的手机号');
+						return false;
+					}
+					$.post('http://m.jswei.cn/index/user/check_username',{username:val},function(result){
 						if(result.status==0){
 							mui.toast(result.msg,{ duration:'long', type:'div' });
 						}
-					});
+					},'jsonp');
 				});
 				$(document).on('click','#sendVerify',function(){
 					var account = $('#account').val();
+					var telReg = /^1(3|4|5|7|8)\d{9}$/;
 					if(account==''){
 						mui.toast('请填写账号');
+						return false;
 					}
-					$.JSONP('http://m.jswei.cn/index/publish/sendSMS',{to:account},function(result){
-						if(result.status==0){
-							mui.toast(result.msg);
-						}
-					});
+					if(!telReg.test(account)){
+						mui.toast('请填写正确的手机号');
+						return false;
+					}
+					if(strat_flag){
+						settime();
+						mui.post('http://m.jswei.cn/index/publish/sendSMS',{to:account},function(data){
+							mui.toast(data.msg);
+						},'json');
+						strat_flag = false;
+					}
 				});
 				$(document).on('click','#reg',function(){
 					var regInfo = {
@@ -114,23 +133,44 @@
 					if(regInfo.verify == '') {
 						regFn.prompt("请输入验证码");
 						return;
-					}
-					$.JSONP('http://m.jswei.cn/index/user/register_handler',regInfo,function(result){
-						if(result.status==1){
-							mui.openWindow({
-								url: "login.html",
-								id: "login.html",
-								show: {
-									aniShow: 'zoom-fade-out',
-									duration: 350
-								}
-							});
-						}else{
-							 mui.toast(result.msg,{ duration:'long', type:'div' });
+					} 
+					
+					var back = mui.back, mainPage = null;
+					
+					mui.ajax('http://m.jswei.cn/index/user/register_handler',{
+						data:regInfo,
+						dataType:'json',	//服务器返回json格式数据
+						type:'post',		//HTTP请求类型
+						timeout:10000,		//超时时间设置为10秒；
+						success:function(data){
+							if(data.status==1){
+								if(!mainPage){
+						            mainPage = plus.webview.currentWebview().opener();
+						            mui.fire(mainPage,"buttonClick",regInfo);
+						        }
+						        back();		
+							}else{
+								mui.toast(data.msg);
+							}
 						}
-					});
+					}); 
 				});
 			});
+			
+			function settime() { 
+				if (countdown == 0) { 
+					strat_flag = true;   
+					$('#sendVerify').text("获取验证码"); 
+					countdown = 60; 
+				}else{ 
+					strat_flag = false;
+					$('#sendVerify').html("重新发送(" + countdown + ")"); 
+					countdown--; 
+					setTimeout(function() {
+						settime();
+					},1000);
+				} 
+			} 
 		</script>
 	</body>
 </html>

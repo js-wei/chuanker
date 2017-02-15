@@ -52,7 +52,7 @@
 			return callback('密码最短需要 6 个字符');
 		}
 		if (!checkEmail(regInfo.email)) {
-			return callback('邮箱地址不合法');
+			//return callback('邮箱地址不合法');
 		}
 		var users = JSON.parse(localStorage.getItem('$users') || '[]');
 		users.push(regInfo);

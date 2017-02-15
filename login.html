@@ -7,6 +7,7 @@
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<link rel="stylesheet" type="text/css" href="css/login.css"/>
+		<script src="js/jquery-2.0.3.min.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
@@ -14,7 +15,7 @@
 		    <h1 class="mui-title zak-header-item">登录</h1>
 		</header>
 		<div class="mui-content">
-		    <form id='login-form' class="mui-input-group">
+		    <div id='login-form' class="mui-input-group">
 				<div class="mui-input-row">
 					<label>账号</label>
 					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号">
@@ -23,14 +24,14 @@
 					<label>密码</label>
 					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
 				</div>
-			</form>
+			</div>
 			<div class="mui-content-padded">
 				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
-				<div class="link-area"><a id='reg' href="reg.html">注册账号</a> <span class="spliter">|</span> <a id='forgetPassword' href="forget_password.html">忘记密码</a>
+				<div class="link-area">
+					<a id='reg' href="reg.html">注册账号</a> <span class="spliter">|</span> <a id='forgetPassword' href="forget_password.html">忘记密码</a>
 				</div>
 			</div>
 			<div class="mui-content-padded oauth-area">
-				
 			</div>
 		</div>
 		
@@ -42,10 +43,11 @@
 					var loginBtn = document.getElementById("login");
 					var accountInput = document.getElementById("account");
 					var passwordInput = document.getElementById("password");
+					var back = mui.back, mainPage = null;
 					
 					loginBtn.addEventListener("tap", function() {
 						var loginInfo = {
-							username: accountInput.value,
+							account: accountInput.value,
 							password: passwordInput.value
 						};
 						var loginFn = {
@@ -54,11 +56,11 @@
 								return plus.nativeUI.toast(err);
 							}
 						}
-						if(loginInfo.username == '') {
+						if(loginInfo.account == '') {
 							loginFn.prompt("请输入账号");
 							return;
 						}
-						if(!loginFn.telReg.test(loginInfo.username)) {	//手机号格式
+						if(!loginFn.telReg.test(loginInfo.account)) {	//手机号格式
 							loginFn.prompt("手机号不正确，请重新输入");
 							return;
 						}
@@ -66,7 +68,35 @@
 							loginFn.prompt("请输入密码");
 							return;
 						}
+						m.post('http://m.jswei.cn/index/user/login_handler',loginInfo,function(data){
+							if(data.status==1){
+								if(!mainPage){
+									plus.storage.removeItem('$users');
+									plus.storage.setItem('$users', JSON.stringify(data.userId));
+									mainPage = plus.webview.currentWebview().opener();
+									mui.fire(mainPage,'userId',data.userId.id);
+									back();
+								}
+							}else{
+								mui.toast(data.msg);
+							}
+						},'json');
 					});
+					$(document).on('click','.link-area a',function(e) {
+						e.preventDefault();
+						mui.openWindow({
+							url: $(this).attr('href'),
+							id: $(this).attr('href'),
+							show: {
+								aniShow: 'zoom-fade-out',
+								duration: 350
+							}
+						});
+					});	
+					window.addEventListener('buttonClick',function(event){          
+				        var value = event.detail.username;
+				        $('#account').val(value);
+				    });
 				});
 			}(mui));
 		</script>

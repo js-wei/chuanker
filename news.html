@@ -14,8 +14,24 @@
 		</header>
 		<div class="mui-content">
 			<!-- 导航选项卡 -->
-			<div class=" mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+			<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 			    <div class="mui-scroll zak-control-item">
+			    	<a class="mui-control-item mui-active">推荐</a>
+			        <a class="mui-control-item">热点</a>
+			        <a class="mui-control-item">北京</a>
+			        <a class="mui-control-item">社会</a>
+			        <a class="mui-control-item">娱乐</a>
+			        <a class="mui-control-item">科技</a>
+			        <a class="mui-control-item">热点</a>
+			        <a class="mui-control-item">北京</a>
+			        <a class="mui-control-item">社会</a>
+			        <a class="mui-control-item">娱乐</a>
+			        <a class="mui-control-item">科技</a>
+			        <a class="mui-control-item">热点</a>
+			        <a class="mui-control-item">北京</a>
+			        <a class="mui-control-item">社会</a>
+			        <a class="mui-control-item">娱乐</a>
+			        <a class="mui-control-item">科技</a>
 		  		</div>
 		  	</div>
 		  	<!--轮播图-->
@@ -86,13 +102,24 @@
 				  interval:5000
 				});
 			});
-			
+			mui('.mui-scroll-wrapper').scroll({
+				scrollX:true,
+				indicators: false,
+				deceleration:0.0006,
+				bounce: true,
+			});
 			$.getJSONP('http://m.jswei.cn/index/publish/get_colunm?id='+id,function(result){
 				column = result.data;
 				var gettpl = $('#column').html();
-				laytpl(gettpl).render(column, function(html){
-					$('.zak-control-item').html(html);
-				});
+//				laytpl(gettpl).render(column, function(html){
+//					$('.zak-control-item').html(html);
+//					mui('.mui-scroll-wrapper').scroll({
+//						scrollX:true,
+//						indicators: false,
+//						deceleration:0.0006,
+//						bounce: true,
+//					});
+//				});
 			});
 			$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
 				site = result.data;
@@ -116,7 +143,6 @@
 					var addMemCont=plus.webview.getWebviewById("page"); //根据ID获取子页面
 //                  $.fire(addMemCont,'postMember',{id:id}); // $.fire(目标页面,子页面的函数,要传的值)
 					var url = $(this).attr('href');
-					console.log(url);
 					addMemCont.loadURL(url);
 				});
 			 	mui('.mui-table-view').on('tap','a',function() {
