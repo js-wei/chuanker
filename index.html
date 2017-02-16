@@ -50,8 +50,8 @@
 	    		}
 	    		if(targetTab=='my.html'){
 	    			var my = plus.webview.getWebviewById('my.html');
-	    			var users = JSON.parse(plus.storage.getItem('$users') || '[]');
-	    			mui.fire(my,'userId',{id:users.id});
+	    			var length = plus.storage.getLength();
+	    			mui.fire(my,'userId',{id:length});
 	    		}
 	    		plus.webview.show(targetTab);
 	    		plus.webview.hide(activeTab);
@@ -59,7 +59,9 @@
 	    	});
 	    	window.addEventListener('activeId',function(event){
 		        var id = event.detail.atcid;
+		        user = plus.storage.getItem('$users') || '[]';
 		        $('.mui-bar-tab a:first').addClass('mui-active').siblings().removeClass('mui-active');
+		        activeTab = 'news.html';
 		    });
     	});
     </script>

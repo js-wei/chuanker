@@ -193,66 +193,87 @@
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
 					<div class="zak-userpic">
-						<img src="images/logo.png" alt="" />
+						<img src="images/logo.png" id="header" alt="" />
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--修改头像结束-->
-		
-		
 	</body>
-	<script src="js/mui.min.js "></script>
-	<script src="js/mui.view.js "></script>
-	<script src='js/feedback.js'></script>
-	<script src='libs/jquery.min.js'></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.view.js"></script>
+	<script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
 	<script>
-		
-		//初始化单页view
-		var viewApi = mui('#app').view({
-			defaultPage: '#my'
-		});
-		(function($) {
-			$.init();
-			
-			$.plusReady(function(e) {
-				var menu = document.getElementById("zak-menu");
-				menu.addEventListener("tap", function(e) {
+		(function(m) {
+			m.init();
+			m.plusReady(function(e) {
+				//初始化单页view
+				var viewApi = m('#app').view({
+					defaultPage: '#my'
+				});
+				var oldBack = m.back;
+			    m.back = function() {
+			        if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+			            viewApi.back();
+			        } else { //执行webview后退
+			            oldBack();
+			        }
+			    };
+				m('.zak-header').on("tap",'a#zak-menu',function(e) {
 					page.imgUp();
 				});
 				var page = {
 					imgUp: function() {
 						plus.nativeUI.actionSheet({
-							cancel: "取消",
-							buttons: [
-								{title: "拍照"},
-								{title: "从相册选择"}
-							]
-						}, function(e) {
-							switch(e.index) {
-								case 1: clickCamera(); break;
-								case 2: clickGallery(); break;
+								cancel: "取消",
+								buttons: [
+									{title: "拍照"},
+									{title: "从相册选择"}
+								]
+							}, 
+							function(e) {
+								switch(e.index) {
+									case 1: //拍照
+										clickCamera();
+										break;
+									case 2: //相册选择
+										clickGallery();
+										break;
+									case 0:
+									default:
+										oldBack();
+										break;
+								}
 							}
-						});
+						);
 					}
 				}
 				
-				
-				
-				//相册选择
-				function clickGallery() {						
-					console.log("从相册选择照片");
+				var clickGallery = function () {						
+					plus.gallery.pick(function(path){
+				    	   $('#header').attr('src',path);
+					    },function (e) {
+					    	console.log("取消选择图片");
+					    },
+					    {filter:"image"}
+					);
 				}
 				
-				//拍照
-				function clickCamera() {  
-			        console.log("拍照");
+				var clickCamera = function () {
+			        var cmr = plus.camera.getCamera();
+			        var res = cmr.supportedImageResolutions[0];
+					var fmt = cmr.supportedImageFormats[0];
+					console.log("Resolution: "+res+", Format: "+fmt);
+					cmr.captureImage(function(path){
+							alert( "Capture image success: " + path ); 
+							$('#header').attr('src',path);
+						},function(error) {
+							alert( "Capture image failed: " + error.message );
+						},
+						{resolution:res,format:fmt}
+					);
 			    };
 			});
-			
 		}(mui));
-		
-		
 	</script>
-
 </html>

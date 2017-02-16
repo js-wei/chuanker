@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
-		    <!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left zak-header-item"></a>-->
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left zak-header-item"></a>
 		    <h1 class="mui-title zak-header-item">登录</h1>
 		</header>
 		<div class="mui-content">
@@ -71,7 +71,6 @@
 						m.post('http://m.jswei.cn/index/user/login_handler',loginInfo,function(data){
 							if(data.status==1){
 								if(!mainPage){
-									plus.storage.removeItem('$users');
 									plus.storage.setItem('$users', JSON.stringify(data.userId));
 									mainPage = plus.webview.getWebviewById('my.html');
 									m.fire(mainPage,'userId',{id:data.userId.id});
@@ -93,6 +92,14 @@
 							}
 						});
 					});	
+					$(document).on('click','a.mui-action-back',function(){
+						if(!mainPage){
+							mainPage = plus.webview.getWebviewById('my.html');
+							var length = plus.storage.getLength();
+							m.fire(mainPage,'userId',{id:length});
+							back();
+						}
+					});
 					window.addEventListener('buttonClick',function(event){          
 				        var value = event.detail.username;
 				        $('#account').val(value);

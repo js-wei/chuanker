@@ -53,7 +53,8 @@
 			"css/personalStyle.css",
 			"css/login.css",
 			"css/reg.css",
-			"libs/jquery.min.js"
+			"libs/jquery.min.js",
+			"js/jquery-2.0.3.min.js"
 		],
 		"refer": [
 			"login.html"
