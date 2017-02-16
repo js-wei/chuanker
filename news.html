@@ -16,22 +16,7 @@
 			<!-- 导航选项卡 -->
 			<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 			    <div class="mui-scroll zak-control-item">
-			    	<a class="mui-control-item mui-active">推荐</a>
-			        <a class="mui-control-item">热点</a>
-			        <a class="mui-control-item">北京</a>
-			        <a class="mui-control-item">社会</a>
-			        <a class="mui-control-item">娱乐</a>
-			        <a class="mui-control-item">科技</a>
-			        <a class="mui-control-item">热点</a>
-			        <a class="mui-control-item">北京</a>
-			        <a class="mui-control-item">社会</a>
-			        <a class="mui-control-item">娱乐</a>
-			        <a class="mui-control-item">科技</a>
-			        <a class="mui-control-item">热点</a>
-			        <a class="mui-control-item">北京</a>
-			        <a class="mui-control-item">社会</a>
-			        <a class="mui-control-item">娱乐</a>
-			        <a class="mui-control-item">科技</a>
+			    	
 		  		</div>
 		  	</div>
 		  	<!--轮播图-->
@@ -70,7 +55,7 @@
 		    	{{# }else{ }}
 			    	<div class="mui-slider-item">
 					    <a href="{{d[i].url}}">
-					        <img src="{{d[i].url}}{{d[i].image}}">
+					        <img src="{{d[i].url}}{{d[i].image}}" height="215">
 					    </a>
 				    </div>
 		    	{{# } }}
@@ -88,46 +73,6 @@
 		<script type="text/javascript">
 			var id = $.request('id')!=null?$.request('id'):0;
 			var site,column,carousel,indicator;
-			
-			$.getJSONP('http://m.jswei.cn/index/publish/get_carousel',function(result){
-				carousel = result.data;
-				indicator = carousel.length-2;
-				laytpl($('#carousel').html()).render(carousel, function(html){
-					$('.mui-slider-loop').html(html);
-				});
-				laytpl($('#indicator').html()).render(indicator, function(html){
-					$('.zak-indicator').html(html);
-				});
-				mui('.mui-slider').slider({
-				  interval:5000
-				});
-			});
-			mui('.mui-scroll-wrapper').scroll({
-				scrollX:true,
-				indicators: false,
-				deceleration:0.0006,
-				bounce: true,
-			});
-			$.getJSONP('http://m.jswei.cn/index/publish/get_colunm?id='+id,function(result){
-				column = result.data;
-				var gettpl = $('#column').html();
-//				laytpl(gettpl).render(column, function(html){
-//					$('.zak-control-item').html(html);
-//					mui('.mui-scroll-wrapper').scroll({
-//						scrollX:true,
-//						indicators: false,
-//						deceleration:0.0006,
-//						bounce: true,
-//					});
-//				});
-			});
-			$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
-				site = result.data;
-                var gettpl = $('#title').html();
-				laytpl(gettpl).render(site, function(html){
-					$('.zak-header').html(html);
-				});
-			});
 			mui.init({
 				subpages: [{
 					url: "page.html?id="+id,
@@ -139,9 +84,37 @@
 				}]
 			});
 			mui.plusReady(function() {
+				$.getJSONP('http://m.jswei.cn/index/publish/get_carousel',function(result){
+					carousel = result.data;
+					indicator = carousel.length-2;
+					laytpl($('#carousel').html()).render(carousel, function(html){
+						$('.mui-slider-loop').html(html);
+					});
+					laytpl($('#indicator').html()).render(indicator, function(html){
+						$('.zak-indicator').html(html);
+					});
+					mui('.mui-slider').slider({
+					  interval:5000
+					});
+				});
+				$.getJSONP('http://m.jswei.cn/index/publish/get_colunm?id='+id,function(result){
+					column = result.data;
+					//console.log($('.mui-control-item').width());
+					var width = result.data.length*70;
+					var gettpl = $('#column').html();
+					laytpl(gettpl).render(column, function(html){
+						$('.zak-control-item').width(width).empty().html(html);
+					});
+				});
+				$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
+					site = result.data;
+	                var gettpl = $('#title').html();
+					laytpl(gettpl).render(site, function(html){
+						$('.zak-header').html(html);
+					});
+				});
 				$(document).on('click','.zak-control-item>a',function(e){
 					var addMemCont=plus.webview.getWebviewById("page"); //根据ID获取子页面
-//                  $.fire(addMemCont,'postMember',{id:id}); // $.fire(目标页面,子页面的函数,要传的值)
 					var url = $(this).attr('href');
 					addMemCont.loadURL(url);
 				});

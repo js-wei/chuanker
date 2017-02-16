@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title></title>
     <link href="css/mui.min.css" rel="stylesheet"/>
+    <script src="js/jquery-2.0.3.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 	<nav class="mui-bar mui-bar-tab">
@@ -41,22 +42,25 @@
     			}
     			self.append(sub);
     		}
-    	});
-    	var activeTab = subpages[0];
-    	mui(".mui-bar-tab").on("tap","a",function() {
-    		var targetTab = this.getAttribute("href");
-    		
-    		if(targetTab == activeTab) {
-    			return;
-    		}
-    		if(targetTab=='my.html'){
-    			var my = plus.webview.getWebviewById('my.html');
-    			var users = JSON.parse(plus.storage.getItem('$users') || '[]');
-    			mui.fire(my,'userId',{id:users.id});
-    		}
-    		plus.webview.show(targetTab);
-    		plus.webview.hide(activeTab);
-    		activeTab = targetTab;
+    		var activeTab = subpages[0];
+	    	mui(".mui-bar-tab").on("tap","a",function() {
+	    		var targetTab = this.getAttribute("href");
+	    		if(targetTab == activeTab) {
+	    			return;
+	    		}
+	    		if(targetTab=='my.html'){
+	    			var my = plus.webview.getWebviewById('my.html');
+	    			var users = JSON.parse(plus.storage.getItem('$users') || '[]');
+	    			mui.fire(my,'userId',{id:users.id});
+	    		}
+	    		plus.webview.show(targetTab);
+	    		plus.webview.hide(activeTab);
+	    		activeTab = targetTab;
+	    	});
+	    	window.addEventListener('activeId',function(event){
+		        var id = event.detail.atcid;
+		        $('.mui-bar-tab a:first').addClass('mui-active').siblings().removeClass('mui-active');
+		    });
     	});
     </script>
 </body>

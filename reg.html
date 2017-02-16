@@ -69,7 +69,7 @@
 						mui.toast('请填写正确的手机号');
 						return false;
 					}
-					$.post('http://m.jswei.cn/index/user/check_username',{username:val},function(result){
+					$.post('http://m.jswei.cn/index/user/check_username',{account:val},function(result){
 						if(result.status==0){
 							mui.toast(result.msg,{ duration:'long', type:'div' });
 						}
@@ -146,7 +146,7 @@
 							if(data.status==1){
 								if(!mainPage){
 						            mainPage = plus.webview.currentWebview().opener();
-						            mui.fire(mainPage,"buttonClick",regInfo);
+						            mui.fire(mainPage,"userId",{id:data.id});
 						        }
 						        back();		
 							}else{

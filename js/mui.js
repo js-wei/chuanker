@@ -4923,7 +4923,6 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			snap: '.mui-control-item'
 		});
 		//		}, 500); //临时处理slider宽度计算不正确的问题(初步确认是scrollbar导致的)
-
 	});
 })(mui, window);
 /**

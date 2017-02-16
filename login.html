@@ -73,8 +73,8 @@
 								if(!mainPage){
 									plus.storage.removeItem('$users');
 									plus.storage.setItem('$users', JSON.stringify(data.userId));
-									mainPage = plus.webview.currentWebview().opener();
-									mui.fire(mainPage,'userId',data.userId.id);
+									mainPage = plus.webview.getWebviewById('my.html');
+									m.fire(mainPage,'userId',{id:data.userId.id});
 									back();
 								}
 							}else{

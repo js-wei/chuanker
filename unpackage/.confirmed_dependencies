@@ -4,7 +4,8 @@
 			"js/mui.min.js",
 			"fonts/mui.ttf",
 			"css/mui.min.css",
-			"news.html"
+			"news.html",
+			"js/jquery-2.0.3.min.js"
 		],
 		"refer": [
 			"message.html",
@@ -133,7 +134,8 @@
 			"message.html",
 			"dynamic.html",
 			"fans.html",
-			"flow.html"
+			"flow.html",
+			"index.html"
 		],
 		"resources": [
 			"fonts/mui.ttf",
@@ -153,7 +155,14 @@
 			"css/personalStyle.css",
 			"js/feedback.js",
 			"js/mui.view.js",
-			"login.html"
+			"login.html",
+			"css/reg.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"css/style.css",
+			"js/app.js",
+			"js/jquery-2.0.3.min.js"
 		],
 		"refer": [
 			"login.html"

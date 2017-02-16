@@ -60,8 +60,8 @@
 				</li>
 			</ul>
 			<ul class="mui-table-view mui-logout">
-				<li class="mui-table-view-cell" style="text-align: center;">
-					<a>退出登录</a>
+				<li class="mui-table-view-cell" style="text-align: center;" id="logout">
+					退出登录
 				</li>
 			</ul>
 		</div>
@@ -86,6 +86,9 @@
 		<script type="text/javascript">
 			mui.init();
 			mui.plusReady(function(){
+				var user=null;
+				//获取用户信息
+				user = plus.storage.getItem('$users') || '[]';
 				mui('.mui-table-view').on('tap','a',function(){
 					mui.openWindow({
 						url: this.href,
@@ -97,8 +100,7 @@
 					});
 				});
 				window.addEventListener('userId',function(event){
-			        var id = event.detail.id;
-			        var user = plus.storage.getItem('$users') || '[]';
+			        var id =  (plus.storage.getLength()>0)?1:(event.detail.id!=undefined)?event.detail.id:0;
 			        if(!id){
 						$('.mui-logout').addClass('mui-hidden');
 						$('.mui-login').removeClass('mui-hidden');
@@ -112,7 +114,20 @@
 							$('.zak-info').html(html);
 						});
 			        }
-			        
+			    });
+			    $(document).on('click','#logout',function(){
+			    	var btnArray = ['是', '否'];
+					mui.confirm('您确定退出?', '', btnArray, function(e) {
+						if (e.index == 0) {
+							if(user){
+								plus.storage.removeItem('$users');
+							}
+ 							var h = plus.webview.getWebviewById("news.html");
+ 							var p = h.parent();
+ 							mui.fire(p,'activeId',{atcid:0});
+ 							plus.webview.show(h);
+						}
+					});
 			    });
 			});
 		</script>
