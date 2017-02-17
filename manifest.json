@@ -248,7 +248,12 @@
 					"css/login.css",
 					"css/reg.css",
 					"libs/jquery.min.js",
-					"js/jquery-2.0.3.min.js"
+					"js/jquery-2.0.3.min.js",
+					"js/jbase64.js",
+					"js/laytpl.js",
+					"css/jquery.Jcrop.min.css",
+					"js/jquery.Jcrop.min.js",
+					"css/Jcrop.gif"
 				],
 				"refer": [],
 				"priority": 0

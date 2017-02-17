@@ -74,9 +74,9 @@
 				{{# } }}
 				<div class="mui-media-body">
 					{{# if(data.nickname!=null){ }}
-						<span>{{data.nickname}}</span>
+						<span id="nickname">{{data.nickname}}</span>
 					{{# }else{ }}
-						<span>{{data.username}}</span>
+						<span id="nickname">{{data.username}}</span>
 					{{# } }}
 					<p class='mui-ellipsis'>账号:{{data.username}}</p>
 				</div>
@@ -100,7 +100,7 @@
 					}
 				});
 				window.addEventListener('userId',function(event){
-			        var id =  plus.storage.getLength()>0?1:0;
+			        var id =  event.detail.id?event.detail.id:plus.storage.getLength()>0?1:0;
 			        //获取用户信息
 					user = plus.storage.getItem('$users') || '[]';
 			        if(!id){
@@ -115,6 +115,7 @@
 						});
 					}
 			    });
+			    
 			    $(document).on('click','#logout',function(){
 			    	var btnArray = ['是', '否'];
 					mui.confirm('您确定退出登录?', '', btnArray, function(e) {

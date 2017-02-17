@@ -69,7 +69,9 @@
 						mui.toast('请填写正确的手机号');
 						return false;
 					}
+					plus.nativeUI.showWaiting();
 					$.post('http://m.jswei.cn/index/user/check_username',{account:val},function(result){
+						plus.nativeUI.closeWaiting();
 						if(result.status==0){
 							mui.toast(result.msg,{ duration:'long', type:'div' });
 						}
@@ -88,7 +90,9 @@
 					}
 					if(strat_flag){
 						settime();
+						plus.nativeUI.showWaiting();
 						mui.post('http://m.jswei.cn/index/publish/sendSMS',{to:account},function(data){
+							plus.nativeUI.closeWaiting();
 							mui.toast(data.msg);
 						},'json');
 						strat_flag = false;
@@ -136,13 +140,14 @@
 					} 
 					
 					var back = mui.back, mainPage = null;
-					
+					plus.nativeUI.showWaiting();
 					mui.ajax('http://m.jswei.cn/index/user/register_handler',{
 						data:regInfo,
 						dataType:'json',	//服务器返回json格式数据
 						type:'post',		//HTTP请求类型
 						timeout:10000,		//超时时间设置为10秒；
 						success:function(data){
+							plus.nativeUI.closeWaiting();
 							if(data.status==1){
 								if(!mainPage){
 						            mainPage = plus.webview.currentWebview().opener();

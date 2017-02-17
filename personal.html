@@ -8,9 +8,29 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="css/personalStyle.css"/>
-		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
 		<link rel="stylesheet" type="text/css" href="css/login.css"/>
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="css/jquery.Jcrop.min.css"/>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.view.js"></script>
+		<script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
+		<script src="js/laytpl.js" type="text/javascript"></script>
+		<script src="js/jbase64.js" type="text/javascript"></script>
+		<script src="js/jquery.Jcrop.min.js" type="text/javascript"></script>
+		
+		<script id="person-header" type="text/html">
+			{{# if(data.head!=null){ }}
+				<img class="mui-media-object mui-pull-left head-img" src="{{data.head}}">
+			{{# }else{ }}
+				<img class="mui-media-object mui-pull-left" src="images/logo.png" width="40px">
+			{{# } }}
+			{{# if(data.nickname!=null){ }}
+				<span>{{data.nickname}}</span>
+			{{# }else{ }}
+				<span>{{data.username}}</span>
+			{{# } }}
+			<p>{{data.username}}</p>
+		</script>
 	</head>
 	<body class="mui-fullscreen">
 		<!--页面主结构开始-->
@@ -38,12 +58,8 @@
 				    	</style>
 						<ul class="mui-table-view">
 							<li class="mui-table-view-cell">
-								<a href="#changeTx" class="mui-navigate-right">
-									<span>
-										<img class="mui-media-object mui-pull-left" src="images/logo.png" width="40px">
-									</span>
-									わたし
-									<p>15371829847</p>
+								<a href="#changeTx" class="mui-navigate-right zak-person-header">
+									
 								</a>
 							</li>
 						</ul>
@@ -51,13 +67,13 @@
 							<li class="mui-table-view-cell">
 								<a href="#changePhone" class="mui-navigate-right">
 									账号
-									<i class="mui-pull-right update">15371829847</i>
+									<i class="mui-pull-right update user-account"></i>
 								</a>
 							</li>
 							<li class="mui-table-view-cell">
 								<a href="#username" class="mui-navigate-right">
 									昵称
-									<i class="mui-pull-right update">わたし</i>
+									<i class="mui-pull-right update user-nickname"></i>
 								</a>
 							</li>
 							<li class="mui-table-view-cell">
@@ -79,7 +95,7 @@
 					<span class="mui-icon mui-icon-left-nav"></span>
 				</button>
 		    	<h1 class="mui-title zak-header-item">修改账号</h1>
-		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">下一步</button>
+		    	<button id="go1" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">下一步</button>
 			</div>
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
@@ -90,7 +106,7 @@
 							</div>
 						</form>
 						<div class="mui-content-padded">
-							<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">获取验证码</button>
+							<button id='getVerifyCode' class="mui-btn mui-btn-block mui-btn-primary">获取验证码</button>
 						</div>
 					</div>
 				</div>
@@ -105,20 +121,20 @@
 					<span class="mui-icon mui-icon-left-nav"></span>
 				</button>
 		    	<h1 class="mui-title zak-header-item">修改账号</h1>
-		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
+		    	<button id="saveAccount" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
 			</div>
 			<div class="mui-page-content">
 				<div class="mui-scroll">
 					<form class="mui-input-group">
 						<div class="mui-input-row">
-							<input id='account' type="tel" class="mui-input-clear mui-input" placeholder="请输入新手机号">
+							<input id='new_account' type="tel" class="mui-input-clear mui-input" placeholder="请输入新手机号">
 						</div>
 						<div class="mui-input-row">
-							<input id='code' type="number" maxlength="6" class="mui-input-clear mui-input" placeholder="请输入验证码">
+							<input id='account_verifyCode' type="number" maxlength="6" class="mui-input-clear mui-input" placeholder="请输入验证码">
 						</div>
 					</form>
 					<div class="mui-content-padded">
-						<button id="reg" class="mui-btn mui-btn-block mui-btn-primary">获取验证码</button>
+						<button id="getVerifyCode1" class="mui-btn mui-btn-block mui-btn-primary">获取验证码</button>
 					</div>
 				</div>
 			</div>
@@ -132,14 +148,14 @@
 					<span class="mui-icon mui-icon-left-nav"></span>
 				</button>
 		    	<h1 class="mui-title zak-header-item">修改昵称</h1>
-		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
+		    	<button id="changeNickname" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
 			</div>
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll">
 						<form class="mui-input-group">
 							<div class="mui-input-row">
-								<input id='account' type="text" class="mui-input-clear mui-input" value="わたし">
+								<input id='account' type="text" class="mui-input-clear mui-input mui-posrion-account" value="1">
 							</div>
 						</form>
 					</div>
@@ -155,21 +171,29 @@
 					<span class="mui-icon mui-icon-left-nav"></span>
 				</button>
 		    	<h1 class="mui-title zak-header-item">修改密码</h1>
-		    	<button id="submit" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
+		    	<button id="savePassword" class="mui-btn zak-header-item mui-btn-blue mui-btn-link mui-pull-right">保存</button>
 			</div>
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll">
 						<form class="mui-input-group">
 							<div class="mui-input-row">
-								<input id='account' type="password" class="mui-input-clear mui-input" placeholder="请输入原密码" />
+								<input id='old_password' type="password" class="mui-input-clear mui-input" placeholder="请输入原密码" />
 							</div>
 							<div class="mui-input-row">
-								<input id='account' type="password" class="mui-input-clear mui-input" placeholder="请输入新密码" />
+								<input id='new_password' type="password" class="mui-input-clear mui-input" placeholder="请输入新密码" />
 							</div>
 							<div class="mui-input-row">
-								<input id='account' type="password" class="mui-input-clear mui-input" placeholder="请再次输入新密码" />
+								<input id='comfr_password' type="password" class="mui-input-clear mui-input" placeholder="请再次输入新密码" />
 							</div>
+							<div>
+								<ol>
+									<li>密码区分大小写</li>
+									<li>密码包含数字，字母，英文状态下的_-</li>
+									<li>密码长度为6至16位之间</li>
+								</ol>
+							</div>
+							<div style="padding-bottom:10px;"></div>
 						</form>
 					</div>
 				</div>
@@ -187,39 +211,66 @@
 		    	<a href="javascript:;" class="mui-icon mui-icon-bars mui-pull-right zak-header-item" id="zak-menu"></a>
 			</div>
 			<style type="text/css">
-				.zak-userpic{height: 100%;width: 100%;background-color: rgba(0,0,0,0.6);display: flex;justify-content: center;align-items: center;}
+				.zak-userpic{height: 100%;width: 100%;background-color: rgba(0,0,0,0.6);padding-top: 25%;}
 				.zak-userpic img{margin-top: -10%; width: 80%;}
+				.zak-position{position:absolute;bottom: 10%;text-align: center;width:100%;}
+				.zak-position button{display: inline-block;background-color:transparent;color:#fff;box-shadow:none;border:none;font-size:45px;}
 			</style>
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
-					<div class="zak-userpic">
-						<img src="images/logo.png" id="header" alt="" />
+					<div class="mui-row zak-userpic">
+						<div class="mui-col-xs-2 mui-col-sm-2"></div>
+						<div class="mui-col-xs-8 mui-col-sm-8">
+							<img src="" id="header" style="width: 100%;" />
+							<input type="hidden" id="x" name="x" />
+							<input type="hidden" id="y" name="y" />
+							<input type="hidden" id="w" name="w" />
+							<input type="hidden" id="h" name="h" />
+						</div>
+					</div>
+					<!--图片预览-->
+					<!--<div id="preview-pane">
+					    <div class="preview-container">
+					      <img src="demo_files/sago.jpg" class="jcrop-preview" alt="Preview" />
+					    </div>
+					  </div>-->
+					<!--上传按钮-->
+					<div class="zak-position zak-btn-panal mui-hidden">
+						<button class="mui-icon mui-icon-checkmarkempty ok"></button>
+						<button class="mui-icon mui-icon-closeempty cancel"></button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--修改头像结束-->
 	</body>
-	<script src="js/mui.min.js"></script>
-	<script src="js/mui.view.js"></script>
-	<script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
-	<script>
+	<script type="text/javascript">
 		(function(m) {
-			m.init();
-			m.plusReady(function(e) {
+			var countdown=60,countdown1=60,strat_flag=true,strat_flag1=true,user=null,mainPage=null;
+			mui.init();
+			mui.plusReady(function(e) {
+				user = plus.storage.getItem('$users');
+				user = data = JSON.parse(user);
+	        	laytpl($('#person-header').html()).render(data, function(html){
+					$('.zak-person-header').html(html);
+					$('i.user-account').text(data.username);
+					var nickname = data.nickname?data.nickname:'暂未填写';
+					$('i.user-nickname').text(nickname);
+					$('input.mui-posrion-account').val(nickname);
+				});
 				//初始化单页view
-				var viewApi = m('#app').view({
+				var viewApi = mui('#app').view({
 					defaultPage: '#my'
 				});
-				var oldBack = m.back;
-			    m.back = function() {
+				var oldBack = mui.back;
+			    mui.back = function() {
 			        if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
 			            viewApi.back();
 			        } else { //执行webview后退
 			            oldBack();
 			        }
 			    };
-				m('.zak-header').on("tap",'a#zak-menu',function(e) {
+				mui('.zak-header').on("tap",'a#zak-menu',function(e) {
 					page.imgUp();
 				});
 				var page = {
@@ -247,32 +298,314 @@
 							}
 						);
 					}
-				}
+				};
+				//截图对象
+				var jcropApi, 
+					boundx,
+        			boundy,
+        			preview = $('#preview-pane'),
+        			pcnt = $('#preview-pane .preview-container'),
+        			pimg = $('#preview-pane .preview-container img'),
+        			xsize = pcnt.width(),
+        			ysize = pcnt.height();
+        			
+				m(document).on('tap','.zak-btn-panal .cancel',function(){
+					jcropApi.destroy();
+					oldBack();
+				});
+				m(document).on('tap','.zak-btn-panal .ok',function(){
+
+				});
 				
+				//相册选取
 				var clickGallery = function () {						
 					plus.gallery.pick(function(path){
-				    	   $('#header').attr('src',path);
+				    	    $('#header').attr('src',path);
+				    	    //pimg.attr('src',path);  截图预览
+				    	    $('.zak-btn-panal').removeClass('mui-hidden');
+				    	    $('#header').Jcrop({
+							  	onChange: updatePreview,
+						     	onSelect: updatePreview,
+						      	aspectRatio: xsize / ysize,
+						      	minSize:[120,120],
+						      	maxSize:[220,220],
+						      	setSelect:[90,40,120,120],
+						    },function() {
+						    	var bounds = this.getBounds();
+							    boundx = bounds[0];
+							    boundy = bounds[1];
+							  	jcropApi = this;
+							});
 					    },function (e) {
 					    	console.log("取消选择图片");
 					    },
 					    {filter:"image"}
 					);
 				}
-				
+				var  updatePreview = function(c){
+				    $('#x').val(c.x);
+				    $('#y').val(c.y);
+				    $('#w').val(c.w);
+				    $('#h').val(c.h);
+			    };
+				//拍照操作
 				var clickCamera = function () {
 			        var cmr = plus.camera.getCamera();
 			        var res = cmr.supportedImageResolutions[0];
 					var fmt = cmr.supportedImageFormats[0];
-					console.log("Resolution: "+res+", Format: "+fmt);
 					cmr.captureImage(function(path){
-							alert( "Capture image success: " + path ); 
 							$('#header').attr('src',path);
 						},function(error) {
-							alert( "Capture image failed: " + error.message );
+							console.log("Capture image failed:" + error.message );
 						},
 						{resolution:res,format:fmt}
 					);
 			    };
+			 	//获取验证码
+				m(document).on('tap','#go1',function(){
+					var code = $('#code').val();
+					if(!code){
+						m.toast('请输入验证码');
+						return false;
+					}
+					viewApi.go('#changePhone2');
+					plus.nativeUI.showWaiting();
+					m.post('http://m.jswei.cn/index/publish/check_verify',{verify:code},function(data){
+						plus.nativeUI.closeWaiting();
+						if(data.status==1){
+							viewApi.go('#changePhone2');
+						}else{
+							m.toast(data.msg);
+						}
+					},'json');
+				});
+				
+				//获取修改账号验证码
+				m(document).on('tap','#getVerifyCode1',function(){
+					var account = $('#new_account').val();
+					if(!account){
+						m.toast('请输入手机号');
+						return false;
+					}
+					if(!/^1(3|4|5|7|8)\d{9}$/.test(account)){
+						m.toast('手机号格式错误');
+						return false;
+					}
+					if(strat_flag1){
+						settime1('#getVerifyCode1');
+						plus.nativeUI.showWaiting();
+						mui.post('http://m.jswei.cn/index/publish/sendSMS',{to:account,t:1},function(data){
+							plus.nativeUI.closeWaiting();
+							mui.toast(data.msg);
+						},'json');
+						strat_flag1 = false;
+					}
+				});
+				//修改账号
+				m(document).on('tap','#saveAccount',function(){
+					var account = {
+						id:4,
+						tel:$('#new_account').val(),
+						verify:$('#account_verifyCode').val(),
+					};
+					var regFn = {
+						telReg : /^1(3|4|5|7|8)\d{9}$/,
+						prompt: function(err) {
+							return plus.nativeUI.toast(err);
+						}
+					}
+					if(!account.tel){
+						regFn.prompt('请填写手机号');
+						return false;
+					}
+					if(!regFn.telReg.test(account.tel)){
+						regFn.prompt('手机格式不正确');
+						return false;
+					}
+					if(!account.verify){
+						regFn.prompt('请填写验证码');
+						return false;
+					}
+					m.post('http://m.jswei.cn/index/publish/check_verify',{verify:account.verify},function(data){
+						if(data.status==1){
+							plus.nativeUI.showWaiting();
+							mui.post('http://m.jswei.cn/index/user/settel',account,function(data){
+								plus.nativeUI.closeWaiting();
+								if(data.status==1){
+									if(plus.storage.getLength()){
+										plus.storage.removeItem('$users');
+									}
+									mainPage = plus.webview.getWebviewById('my.html');
+									m.fire(mainPage,'userId',{id:0});
+									oldBack();
+								}else{
+									mui.toast(data.msg);
+								}
+							},'json');
+						}else{
+							m.toast(data.msg);
+						}
+					},'json');
+					
+				});
+				//修改密码
+				m(document).on('tap','#savePassword',function(){
+					var password = {
+						account:$('i.user-account').text(),
+						old_password:$('#old_password').val(),
+						new_password:$('#new_password').val(),
+						comfr_password:$('#comfr_password').val(),
+					};
+					var regFn = {
+						pwdReg: /^([0-9a-zA-Z\_\-]){6,16}$/,
+						prompt: function(err) {			//错误提示，err为提示信息
+							return plus.nativeUI.toast(err);
+						}
+					}
+					if(!password.account){
+						regFn.prompt('错误的请求');
+						return false;
+					}
+					if(!password.old_password){
+						regFn.prompt('请填写原密码');
+						return false;
+					}
+					if(!password.new_password){
+						regFn.prompt('请填写新密码');
+						return false;
+					}
+					if(!regFn.pwdReg.test(password.new_password)){
+						regFn.prompt('密码格式不正确');
+						return false;
+					}
+					if(!password.comfr_password){
+						regFn.prompt('请填写确认密码');
+						return false;
+					}
+					if(password.new_password != password.comfr_password){
+						regFn.prompt('新密码和确认密码不一致');
+						return false;
+					}
+					plus.nativeUI.showWaiting();
+					mui.post('http://m.jswei.cn/index/user/set_new_password',password,function(data){
+						plus.nativeUI.closeWaiting();
+						if(data.status==1){
+							if(plus.storage.getLength()){
+								plus.storage.removeItem('$users');
+							}
+							mainPage = plus.webview.getWebviewById('my.html');
+							m.fire(mainPage,'userId',{id:0});
+							oldBack();
+						}else{
+							mui.toast(data.msg);
+						}
+					},'json');
+				});
+				
+				//检测昵称是否可用
+				$(document).on('blur','input.mui-posrion-account',function(){
+					var account = $(this).val();
+					if(!account){
+						m.toast('请输入昵称');
+						return false;
+					}
+					if(account=='暂未填写'){
+						m.toast('请输入昵称');
+						return false;
+					}
+					plus.nativeUI.showWaiting();
+					m.post('http://m.jswei.cn/index/user/check_nickname',{nickname:account},function(data){
+						plus.nativeUI.closeWaiting();
+						if(data.status==0){
+							m.toast(data.msg);
+						}
+					},'json');
+				});
+				//修改昵称
+				m(document).on('tap','#changeNickname',function(){
+					var account = $('input.mui-posrion-account').val();
+					var phone = $('i.user-account').text();
+					if(!account){
+						m.toast('请填写昵称');
+						return false;
+					}
+					if(account=='暂未填写'){
+						m.toast('请填写昵称');
+						return false;
+					}
+					if(!phone){
+						m.toast('缺少必要条件');
+						return false;
+					}
+					m.post('http://m.jswei.cn/index/user/check_nickname',{nickname:account},function(data){
+						if(data.status==0){
+							m.toast(data.msg);
+						}else{
+							plus.nativeUI.showWaiting();
+							mui.post('http://m.jswei.cn/index/user/update_nickname',{nickname:account,phone:phone},function(data){
+								plus.nativeUI.closeWaiting();
+								if(data.status==1){
+									if(plus.storage.getLength()){
+										plus.storage.removeItem('$users');
+										plus.storage.setItem('$users',JSON.stringify(data.user));
+									}
+									mainPage = plus.webview.getWebviewById('my.html');
+									m.fire(mainPage,'userId',{id:data.user.id});
+									oldBack();
+								}else{
+									mui.toast(data.msg);
+								}
+							},'json');
+						}
+					},'json');
+				});
+				//获取验证码
+				m(document).on('tap','#getVerifyCode',function(){
+					var account = $('.user-account').text();
+					if(!account){
+						m.toast('请输入验证码');
+						return false;
+					}
+					if(strat_flag){
+						settime('#getVerifyCode');
+						plus.nativeUI.showWaiting();
+						mui.post('http://m.jswei.cn/index/publish/sendSMS',{to:account,t:1},function(data){
+							plus.nativeUI.closeWaiting();
+							mui.toast(data.msg);
+						},'json');
+						strat_flag = false;
+					}
+				});
+				var settime = function (obj) {
+					obj = obj ? obj :'#sendVerify';
+					if (countdown == 0) { 
+						strat_flag = true;   
+						$(obj).text("获取验证码"); 
+						countdown = 60; 
+					}else{ 
+						strat_flag = false;
+						$(obj).html("重新发送(" + countdown + ")"); 
+						countdown--; 
+						setTimeout(function() {
+							settime(obj);
+						},1000);
+					} 
+				}
+				var settime1 = function (obj) {
+					obj = obj ? obj :'#sendVerify';
+					if (countdown1 == 0) { 
+						strat_flag1 = true;   
+						$(obj).text("获取验证码"); 
+						countdown1 = 60; 
+					}else{ 
+						strat_flag1 = false;
+						$(obj).html("重新发送(" + countdown1 + ")"); 
+						countdown1--; 
+						setTimeout(function() {
+							settime1(obj);
+						},1000);
+					} 
+				} 
 			});
 		}(mui));
 	</script>

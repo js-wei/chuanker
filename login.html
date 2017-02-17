@@ -68,9 +68,14 @@
 							loginFn.prompt("请输入密码");
 							return;
 						}
+						plus.nativeUI.showWaiting();
 						m.post('http://m.jswei.cn/index/user/login_handler',loginInfo,function(data){
+							plus.nativeUI.closeWaiting();
 							if(data.status==1){
 								if(!mainPage){
+									if(plus.storage.getLength()){
+										plus.storage.removeItem('$users');
+									}
 									plus.storage.setItem('$users', JSON.stringify(data.userId));
 									mainPage = plus.webview.getWebviewById('my.html');
 									m.fire(mainPage,'userId',{id:data.userId.id});
