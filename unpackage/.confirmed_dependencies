@@ -59,7 +59,8 @@
 			"js/laytpl.js",
 			"css/jquery.Jcrop.min.css",
 			"js/jquery.Jcrop.min.js",
-			"css/Jcrop.gif"
+			"css/Jcrop.gif",
+			"images/60x60.gif"
 		],
 		"refer": [
 			"login.html"

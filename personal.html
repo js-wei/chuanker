@@ -220,20 +220,16 @@
 				<div class="mui-scroll-wrapper">
 					<div class="mui-row zak-userpic">
 						<div class="mui-col-xs-2 mui-col-sm-2"></div>
-						<div class="mui-col-xs-8 mui-col-sm-8">
-							<img src="" id="header" style="width: 100%;" />
-							<input type="hidden" id="x" name="x" />
-							<input type="hidden" id="y" name="y" />
-							<input type="hidden" id="w" name="w" />
-							<input type="hidden" id="h" name="h" />
+						<div class="mui-col-xs-8 mui-col-sm-8 mui-header">
+							<img id="header" style="width:100%;" />
 						</div>
+						<input type="hidden" id="x1" name="x1" />
+				        <input type="hidden" id="y1" name="y1" />
+				        <input type="hidden" id="x2" name="x2" />
+				        <input type="hidden" id="y2" name="y2" />
+				        <input type="hidden" id="w" name="w" />
+				        <input type="hidden" id="h" name="h" />
 					</div>
-					<!--图片预览-->
-					<!--<div id="preview-pane">
-					    <div class="preview-container">
-					      <img src="demo_files/sago.jpg" class="jcrop-preview" alt="Preview" />
-					    </div>
-					  </div>-->
 					<!--上传按钮-->
 					<div class="zak-position zak-btn-panal mui-hidden">
 						<button class="mui-icon mui-icon-checkmarkempty ok"></button>
@@ -268,6 +264,7 @@
 			            viewApi.back();
 			        } else { //执行webview后退
 			            oldBack();
+			            $('#zak-menu').show();
 			        }
 			    };
 				mui('.zak-header').on("tap",'a#zak-menu',function(e) {
@@ -314,28 +311,72 @@
 					oldBack();
 				});
 				m(document).on('tap','.zak-btn-panal .ok',function(){
-
+					var crop = {
+						x1:$('#x1').val(),
+					    y1:$('#y1').val(),
+					    x2:$('#x2').val(),
+					    y2:$('#y2').val(),
+					    w:$('#w').val(),
+					    h:$('#h').val(),
+					    dw:$('#header').width(),
+					    dh:$('#header').height()
+					};
+					//plus.nativeUI.showWaiting();
+					image2Base64($('#header').attr('src'),crop,function(result){
+						m.post('http://m.jswei.cn/index/publish/save',{file:result,user:user.username},function(data){
+							//plus.nativeUI.closeWaiting();
+							console.log(JSON.stringify(data));
+						},'json');
+					},'image/jpeg');
+					//console.log(JSON.stringify(crop));
+					//var path = $('#header').attr('src');
+					
 				});
+				/**
+				 * 压缩图片
+				 * @param {Object} url				地址
+				 * @param {Object} crop				压缩参数
+				 * @param {Object} callback			回调
+				 * @param {Object} outputFormat		类型
+				 */
+				image2Base64=function(url,crop,callback, outputFormat){
+				  	var canvas = document.createElement('canvas'),
+				    ctx = canvas.getContext('2d'),
+				    img = new Image();
+				    img.src = url;
+				  	img.crossOrigin = 'Anonymous';
+				  	img.onload = function(){
+				  		canvas.width = crop.dw;
+					    canvas.height = crop.dh;
+					    ctx.drawImage(img,crop.x1,crop.y1,crop.w,crop.h,0,0,crop.w,crop.h);
+					    var dataURL = canvas.toDataURL(outputFormat || 'image/png');
+					    callback.call(this, dataURL);
+					    canvas = null; 
+					};
+				};
 				
 				//相册选取
 				var clickGallery = function () {						
 					plus.gallery.pick(function(path){
+							$('.zak-btn-panal').removeClass('mui-hidden');
 				    	    $('#header').attr('src',path);
-				    	    //pimg.attr('src',path);  截图预览
-				    	    $('.zak-btn-panal').removeClass('mui-hidden');
-				    	    $('#header').Jcrop({
-							  	onChange: updatePreview,
-						     	onSelect: updatePreview,
-						      	aspectRatio: xsize / ysize,
-						      	minSize:[120,120],
-						      	maxSize:[220,220],
-						      	setSelect:[90,40,120,120],
-						    },function() {
-						    	var bounds = this.getBounds();
-							    boundx = bounds[0];
-							    boundy = bounds[1];
-							  	jcropApi = this;
-							});
+				    	    $('#zak-menu').hide();
+				    	    setTimeout(function(){
+				    	    	$('#header').Jcrop({
+								  	onChange: updatePreview,
+							     	onSelect: updatePreview,
+							      	minSize:[120,120],
+							      	maxSize:[220,220],
+							      	setSelect:[90,40,120,120],
+							    },function() {
+							    	var bounds = this.getBounds();
+								    boundx = bounds[0];
+								    boundy = bounds[1];
+								  	jcropApi = this;
+								  	//preview.appendTo(jcropApi.ui.holder);
+								});
+				    	    },500);
+				    	    /**/
 					    },function (e) {
 					    	console.log("取消选择图片");
 					    },
@@ -343,11 +384,13 @@
 					);
 				}
 				var  updatePreview = function(c){
-				    $('#x').val(c.x);
-				    $('#y').val(c.y);
-				    $('#w').val(c.w);
-				    $('#h').val(c.h);
-			    };
+				  $('#x1').val(c.x);
+				  $('#y1').val(c.y);
+				  $('#x2').val(c.x2);
+				  $('#y2').val(c.y2);
+				  $('#w').val(c.w);
+				  $('#h').val(c.h);
+				};
 				//拍照操作
 				var clickCamera = function () {
 			        var cmr = plus.camera.getCamera();

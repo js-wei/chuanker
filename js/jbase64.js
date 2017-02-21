@@ -225,10 +225,26 @@
 				    canvas.height = img.height;
 				    canvas.width = img.width;
 				    ctx.drawImage(img,0,0);
-				    var dataURL = canvas.toDataURL(outputFormat || 'image/png');
+				    var dataURL = canvas.toDataURL(outputFormat || 'image/png',5);
 				    callback.call(this, dataURL);
 				    canvas = null; 
 				};
+			},
+			image2Base64:function(path,img,callback,type){
+				var canvas=null,image=null,ctx=null,dataURL=null;
+				canvas = document.createElement('canvas');
+				image = new Image();
+				image.onload=function(){
+					if(canvas.getContext()){
+						canvas.width = img.sw;
+						canvas.height = img.sh;
+						ctx = canvas.getContext('2d');
+						ctx.drawImage(image,img.x,img.y,img.w,img.h,0,0,img.w,img.h);
+						dataURL = canvas.toDataURL();
+						callback.call(this,dataURL);
+					}
+				};
+				image.src = path;
 			}
 	};
 	window.BASE64 = __BASE64;
