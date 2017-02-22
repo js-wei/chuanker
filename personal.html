@@ -223,6 +223,7 @@
 						<div class="mui-col-xs-8 mui-col-sm-8 mui-header">
 							<img id="header" style="width:100%;" />
 						</div>
+						<input type="hidden" id="resizeImage" name="resizeImage" />
 						<input type="hidden" id="x1" name="x1" />
 				        <input type="hidden" id="y1" name="y1" />
 				        <input type="hidden" id="x2" name="x2" />
@@ -321,16 +322,25 @@
 					    dw:$('#header').width(),
 					    dh:$('#header').height()
 					};
-					//plus.nativeUI.showWaiting();
-					image2Base64($('#header').attr('src'),crop,function(result){
-						m.post('http://m.jswei.cn/index/publish/save',{file:result,user:user.username},function(data){
-							//plus.nativeUI.closeWaiting();
-							console.log(JSON.stringify(data));
+					console.log(JSON.stringify(crop));
+					plus.nativeUI.showWaiting();
+					resizeImage($('#header').attr('src'),crop,function(dataURL){
+						m.post('http://m.jswei.cn/index/publish/save',{file:dataURL,user:user.username},function(data){
+							plus.nativeUI.closeWaiting();
+							cropImage(data.path,crop,function(dataURL){
+								plus.nativeUI.closeWaiting();
+								
+								m.post('http://m.jswei.cn/index/publish/save',{file:dataURL,user:user.username,id:user.id},function(data){
+									if(!mainPage){
+										mainPage = plus.webview.getWebviewById('my.html');
+										mui.fire(mainPage,'userId',{id:user.id,u:1});
+										plus.webview.open('my.html','my.html');
+									}
+								},'json');
+								
+							},'image/jpeg');/* */
 						},'json');
 					},'image/jpeg');
-					//console.log(JSON.stringify(crop));
-					//var path = $('#header').attr('src');
-					
 				});
 				/**
 				 * 压缩图片
@@ -339,22 +349,36 @@
 				 * @param {Object} callback			回调
 				 * @param {Object} outputFormat		类型
 				 */
-				image2Base64=function(url,crop,callback, outputFormat){
+				var cropImage=function(url,crop,callback, outputFormat){
 				  	var canvas = document.createElement('canvas'),
 				    ctx = canvas.getContext('2d'),
 				    img = new Image();
 				    img.src = url;
 				  	img.crossOrigin = 'Anonymous';
 				  	img.onload = function(){
-				  		canvas.width = crop.dw;
-					    canvas.height = crop.dh;
+				  		canvas.width = crop.w;
+					    canvas.height = crop.h;
 					    ctx.drawImage(img,crop.x1,crop.y1,crop.w,crop.h,0,0,crop.w,crop.h);
-					    var dataURL = canvas.toDataURL(outputFormat || 'image/png');
+					    var dataURL = canvas.toDataURL(outputFormat || 'image/png',0.8);
 					    callback.call(this, dataURL);
 					    canvas = null; 
 					};
 				};
-				
+				var resizeImage = function(path,crop,callback,outputFormat){
+					var canvas = document.createElement('canvas'),
+				    ctx = canvas.getContext('2d'),
+				    img = new Image();
+				    img.src = path;
+				  	img.crossOrigin = 'Anonymous';
+				  	img.onload = function(){
+				  		canvas.width = crop.dw;
+					    canvas.height = crop.dh;
+					    ctx.drawImage(img,0,0,crop.dw,crop.dh);
+					    var dataURL = canvas.toDataURL(outputFormat || 'image/png',0.2);
+					    callback.call(this, dataURL);
+					    canvas = null; 
+					};
+				};
 				//相册选取
 				var clickGallery = function () {						
 					plus.gallery.pick(function(path){
@@ -479,8 +503,9 @@
 										plus.storage.removeItem('$users');
 									}
 									mainPage = plus.webview.getWebviewById('my.html');
-									m.fire(mainPage,'userId',{id:0});
-									oldBack();
+									m.fire(mainPage,'userId',{id:0,u:1});
+									//oldBack();
+									plus.webview.open('my.html','my.html');
 								}else{
 									mui.toast(data.msg);
 								}
@@ -537,8 +562,9 @@
 								plus.storage.removeItem('$users');
 							}
 							mainPage = plus.webview.getWebviewById('my.html');
-							m.fire(mainPage,'userId',{id:0});
-							oldBack();
+							m.fire(mainPage,'userId',{id:0,u:1});
+							//oldBack();
+							plus.webview.open('my.html','my.html');
 						}else{
 							mui.toast(data.msg);
 						}
@@ -593,8 +619,9 @@
 										plus.storage.setItem('$users',JSON.stringify(data.user));
 									}
 									mainPage = plus.webview.getWebviewById('my.html');
-									m.fire(mainPage,'userId',{id:data.user.id});
-									oldBack();
+									m.fire(mainPage,'userId',{id:data.user.id,u:1});
+									//oldBack();
+									plus.webview.open('my.html','my.html');
 								}else{
 									mui.toast(data.msg);
 								}

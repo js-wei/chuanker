@@ -21,7 +21,6 @@
 				<!-- 登录状态 -->
 				<div class="mui-logout">
 					<li class="mui-table-view-cell mui-media zak-info">
-						
 					</li>
 					<li class="zak-table-view-cell">
 						<div class="mui-bar-tab">
@@ -101,19 +100,20 @@
 				});
 				window.addEventListener('userId',function(event){
 			        var id =  event.detail.id?event.detail.id:plus.storage.getLength()>0?1:0;
-			        //获取用户信息
-					user = plus.storage.getItem('$users') || '[]';
-			        if(!id){
-						$('.mui-logout').addClass('mui-hidden');
-						$('.mui-login').removeClass('mui-hidden');
-					}else{
-						$('.mui-login').addClass('mui-hidden');
-						$('.mui-logout').removeClass('mui-hidden');
-						data = JSON.parse(user);
+			        user = plus.storage.getItem('$users') || '[]';
+			        data = JSON.parse(user);
+			        console.log(id);
+			        if(id){
+			        	$('.mui-login').hide();
+						$('.mui-logout').show();
 			        	laytpl($('#userInfo').html()).render(data, function(html){
 							$('.zak-info').html(html);
 						});
-					}
+			        }else{
+			        	$('.mui-logout').hide();
+						$('.mui-login').show();
+			        }
+			       
 			    });
 			    
 			    $(document).on('click','#logout',function(){

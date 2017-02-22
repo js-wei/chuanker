@@ -257,7 +257,9 @@
 					"images/60x60.gif",
 					null
 				],
-				"refer": [],
+				"refer": [
+					"my.html"
+				],
 				"priority": 0
 			},
 			"page.html": {
