@@ -224,12 +224,17 @@
 							<img id="header" style="width:100%;" />
 						</div>
 						<input type="hidden" id="resizeImage" name="resizeImage" />
-						<input type="hidden" id="x1" name="x1" />
+						<input type="hidden" id="x" name="x" />
+						<input type="hidden" id="y" name="y" />
+						<input type="hidden" id="w" name="w" />
+						<input type="hidden" id="h" name="h" />
+						<!--<input type="hidden" id="x1" name="x1" />
 				        <input type="hidden" id="y1" name="y1" />
 				        <input type="hidden" id="x2" name="x2" />
 				        <input type="hidden" id="y2" name="y2" />
 				        <input type="hidden" id="w" name="w" />
-				        <input type="hidden" id="h" name="h" />
+				        <input type="hidden" id="h" name="h" />-->
+				        
 					</div>
 					<!--上传按钮-->
 					<div class="zak-position zak-btn-panal mui-hidden">
@@ -247,14 +252,20 @@
 			mui.init();
 			mui.plusReady(function(e) {
 				user = plus.storage.getItem('$users');
-				user = data = JSON.parse(user);
-	        	laytpl($('#person-header').html()).render(data, function(html){
-					$('.zak-person-header').html(html);
-					$('i.user-account').text(data.username);
-					var nickname = data.nickname?data.nickname:'暂未填写';
-					$('i.user-nickname').text(nickname);
-					$('input.mui-posrion-account').val(nickname);
-				});
+				user  = JSON.parse(user);
+				mui.post('http://m.igouwu.la/index/user/get_user_info',{id:user.id},function(result){
+	        		if(result.status==1){
+	        			data = result.user;
+			        	laytpl($('#person-header').html()).render(data, function(html){
+							$('.zak-person-header').html(html);
+							$('i.user-account').text(data.username);
+							var nickname = data.nickname?data.nickname:'暂未填写';
+							$('i.user-nickname').text(nickname);
+							$('input.mui-posrion-account').val(nickname);
+						});
+	        		}
+	        	});
+				
 				//初始化单页view
 				var viewApi = mui('#app').view({
 					defaultPage: '#my'
@@ -313,33 +324,28 @@
 				});
 				m(document).on('tap','.zak-btn-panal .ok',function(){
 					var crop = {
-						x1:$('#x1').val(),
-					    y1:$('#y1').val(),
-					    x2:$('#x2').val(),
-					    y2:$('#y2').val(),
+						x:$('#x').val(),
+					    y:$('#y').val(),
 					    w:$('#w').val(),
 					    h:$('#h').val(),
 					    dw:$('#header').width(),
 					    dh:$('#header').height()
 					};
-					console.log(JSON.stringify(crop));
 					plus.nativeUI.showWaiting();
 					resizeImage($('#header').attr('src'),crop,function(dataURL){
-						m.post('http://m.jswei.cn/index/publish/save',{file:dataURL,user:user.username},function(data){
+						mui.post('http://m.igouwu.la/index/publish/save',{x:crop.x,y:crop.y,w:crop.w,h:crop.h,file:dataURL,user:user.username,id:user.id},function(data){
 							plus.nativeUI.closeWaiting();
-							cropImage(data.path,crop,function(dataURL){
-								plus.nativeUI.closeWaiting();
-								
-								m.post('http://m.jswei.cn/index/publish/save',{file:dataURL,user:user.username,id:user.id},function(data){
-									if(!mainPage){
-										mainPage = plus.webview.getWebviewById('my.html');
-										mui.fire(mainPage,'userId',{id:user.id,u:1});
-										plus.webview.open('my.html','my.html');
-									}
-								},'json');
-								
-							},'image/jpeg');/* */
-						},'json');
+							if(data.status==1){
+								if(!mainPage){
+									mainPage = plus.webview.getWebviewById('my.html');
+									mui.fire(mainPage,'userId',{id:user.id,u:2,path:data.path});
+								}
+								oldBack();
+							}else{
+								mui.toast(data.msg);
+							}
+							
+						});
 					},'image/jpeg');
 				});
 				/**
@@ -408,12 +414,16 @@
 					);
 				}
 				var  updatePreview = function(c){
-				  $('#x1').val(c.x);
-				  $('#y1').val(c.y);
-				  $('#x2').val(c.x2);
-				  $('#y2').val(c.y2);
-				  $('#w').val(c.w);
-				  $('#h').val(c.h);
+					$('#x').val(c.x);
+				    $('#y').val(c.y);
+				    $('#w').val(c.w);
+				    $('#h').val(c.h);
+//				  $('#x1').val(c.x);
+//				  $('#y1').val(c.y);
+//				  $('#x2').val(c.x2);
+//				  $('#y2').val(c.y2);
+//				  $('#w').val(c.w);
+//				  $('#h').val(c.h);
 				};
 				//拍照操作
 				var clickCamera = function () {
@@ -437,7 +447,7 @@
 					}
 					viewApi.go('#changePhone2');
 					plus.nativeUI.showWaiting();
-					m.post('http://m.jswei.cn/index/publish/check_verify',{verify:code},function(data){
+					m.post('http://m.igouwu.la/index/publish/check_verify',{verify:code},function(data){
 						plus.nativeUI.closeWaiting();
 						if(data.status==1){
 							viewApi.go('#changePhone2');
@@ -461,7 +471,7 @@
 					if(strat_flag1){
 						settime1('#getVerifyCode1');
 						plus.nativeUI.showWaiting();
-						mui.post('http://m.jswei.cn/index/publish/sendSMS',{to:account,t:1},function(data){
+						mui.post('http://m.igouwu.la/index/publish/sendSMS',{to:account,t:1},function(data){
 							plus.nativeUI.closeWaiting();
 							mui.toast(data.msg);
 						},'json');
@@ -493,10 +503,10 @@
 						regFn.prompt('请填写验证码');
 						return false;
 					}
-					m.post('http://m.jswei.cn/index/publish/check_verify',{verify:account.verify},function(data){
+					m.post('http://m.igouwu.la/index/publish/check_verify',{verify:account.verify},function(data){
 						if(data.status==1){
 							plus.nativeUI.showWaiting();
-							mui.post('http://m.jswei.cn/index/user/settel',account,function(data){
+							mui.post('http://m.igouwu.la/index/user/settel',account,function(data){
 								plus.nativeUI.closeWaiting();
 								if(data.status==1){
 									if(plus.storage.getLength()){
@@ -555,7 +565,7 @@
 						return false;
 					}
 					plus.nativeUI.showWaiting();
-					mui.post('http://m.jswei.cn/index/user/set_new_password',password,function(data){
+					mui.post('http://m.igouwu.la/index/user/set_new_password',password,function(data){
 						plus.nativeUI.closeWaiting();
 						if(data.status==1){
 							if(plus.storage.getLength()){
@@ -583,7 +593,7 @@
 						return false;
 					}
 					plus.nativeUI.showWaiting();
-					m.post('http://m.jswei.cn/index/user/check_nickname',{nickname:account},function(data){
+					m.post('http://m.igouwu.la/index/user/check_nickname',{nickname:account},function(data){
 						plus.nativeUI.closeWaiting();
 						if(data.status==0){
 							m.toast(data.msg);
@@ -606,12 +616,12 @@
 						m.toast('缺少必要条件');
 						return false;
 					}
-					m.post('http://m.jswei.cn/index/user/check_nickname',{nickname:account},function(data){
+					m.post('http://m.igouwu.la/index/user/check_nickname',{nickname:account},function(data){
 						if(data.status==0){
 							m.toast(data.msg);
 						}else{
 							plus.nativeUI.showWaiting();
-							mui.post('http://m.jswei.cn/index/user/update_nickname',{nickname:account,phone:phone},function(data){
+							mui.post('http://m.igouwu.la/index/user/update_nickname',{nickname:account,phone:phone},function(data){
 								plus.nativeUI.closeWaiting();
 								if(data.status==1){
 									if(plus.storage.getLength()){
@@ -639,7 +649,7 @@
 					if(strat_flag){
 						settime('#getVerifyCode');
 						plus.nativeUI.showWaiting();
-						mui.post('http://m.jswei.cn/index/publish/sendSMS',{to:account,t:1},function(data){
+						mui.post('http://m.igouwu.la/index/publish/sendSMS',{to:account,t:1},function(data){
 							plus.nativeUI.closeWaiting();
 							mui.toast(data.msg);
 						},'json');

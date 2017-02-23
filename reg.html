@@ -70,7 +70,7 @@
 						return false;
 					}
 					plus.nativeUI.showWaiting();
-					$.post('http://m.jswei.cn/index/user/check_username',{account:val},function(result){
+					$.post('http://m.igouwu.la/index/user/check_username',{account:val},function(result){
 						plus.nativeUI.closeWaiting();
 						if(result.status==0){
 							mui.toast(result.msg,{ duration:'long', type:'div' });
@@ -91,7 +91,7 @@
 					if(strat_flag){
 						settime();
 						plus.nativeUI.showWaiting();
-						mui.post('http://m.jswei.cn/index/publish/sendSMS',{to:account},function(data){
+						mui.post('http://m.igouwu.la/index/publish/sendSMS',{to:account},function(data){
 							plus.nativeUI.closeWaiting();
 							mui.toast(data.msg);
 						},'json');
@@ -141,7 +141,7 @@
 					
 					var back = mui.back, mainPage = null;
 					plus.nativeUI.showWaiting();
-					mui.ajax('http://m.jswei.cn/index/user/register_handler',{
+					mui.ajax('http://m.igouwu.la/index/user/register_handler',{
 						data:regInfo,
 						dataType:'json',	//服务器返回json格式数据
 						type:'post',		//HTTP请求类型

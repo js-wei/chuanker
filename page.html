@@ -60,10 +60,10 @@
 				var id  = $.request('id');
 				//下拉刷新数据
 				function pulldownRefresh() {
-					$.getJSONP('http://m.jswei.cn/news/listing?id='+id,function(result){
+					$.getJSONP('http://m.igouwu.la/news/listing?id='+id,function(result){
 						if(result.status!=0){
 							laytpl($('#list').html()).render(result.data, function(html){
-								$('.mui-table-view').html(html);
+								$('.mui-table-view').append(html);
 							});
 						}
 					});
@@ -72,10 +72,10 @@
 				var count = 0;
 				//上拉刷新数据
 				function pullupRefresh() {
-					$.getJSONP('http://m.jswei.cn/news/listing?id='+id+'&p='+count,function(result){
+					$.getJSONP('http://m.igouwu.la/news/listing?id='+id+'&p='+count,function(result){
 						if(result.status!=0){
 							laytpl($('#list').html()).render(result.data, function(html){
-								$('.mui-table-view').html(html);
+								$('.mui-table-view').append(html);
 							});
 						}
 						mui('#refreshContainer').pullRefresh().endPullupToRefresh((++count > result.page_count)); //参数为true代表没有更多数据了。
@@ -92,6 +92,12 @@
 						mui('#refreshContainer').pullRefresh().pullupLoading();
 					});
 				}
+				
+				window.addEventListener('refrash',function(e){
+					var t = e.detail.t;
+					console.log(t);
+				});
+				
 				mui('.mui-table-view').on('tap','a',function(e) {
 					mui.openWindow({
 						url: this.href,

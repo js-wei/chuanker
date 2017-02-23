@@ -8,6 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<script src="js/jquery-2.0.3.min.js"></script>
 		<script src="js/laytpl.js" type="text/javascript" charset="utf-8"></script>
+		
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav zak-header">
@@ -19,8 +20,16 @@
 			</style>
 		    <ul class="mui-table-view mui-table-view-chevron zak-table-view-chevron">
 				<!-- 登录状态 -->
-				<div class="mui-logout">
+				<div class="mui-logout" style="display:none;">
 					<li class="mui-table-view-cell mui-media zak-info">
+						<a href="personal.html" class="mui-navigate-right">
+						<span id="user-header">
+						</span>
+						<div class="mui-media-body">
+							<span id="nickname"></span>
+							<p class='mui-ellipsis' id="username"></p>
+						</div>
+					</a>
 					</li>
 					<li class="zak-table-view-cell">
 						<div class="mui-bar-tab">
@@ -40,7 +49,7 @@
 					</li>
 				</div>
 				<!-- 未登录状态 -->
-				<li class="mui-table-view-cell mui-media mui-login">
+				<li class="mui-table-view-cell mui-media mui-login" style="display:block;">
 					<a href="login.html" style="line-height: 42px;" class="mui-navigate-right">
 						<img class="mui-media-object mui-pull-left head-img" src="images/logo.png">
 						请登录您的账号
@@ -58,29 +67,12 @@
 					</a>
 				</li>
 			</ul>
-			<ul class="mui-table-view mui-logout">
+			<ul class="mui-table-view mui-logout" style="display:none;">
 				<li class="mui-table-view-cell" style="text-align: center;" id="logout">
 					退出登录
 				</li>
 			</ul>
 		</div>
-		<script id="userInfo" type="text/html">
-			<a href="personal.html" class="mui-navigate-right">
-				{{# if(data.head!=null){ }}
-					<img class="mui-media-object mui-pull-left head-img" src="{{data.head}}">
-				{{# }else{ }}
-					<img class="mui-media-object mui-pull-left head-img" src="images/logo.png">
-				{{# } }}
-				<div class="mui-media-body">
-					{{# if(data.nickname!=null){ }}
-						<span id="nickname">{{data.nickname}}</span>
-					{{# }else{ }}
-						<span id="nickname">{{data.username}}</span>
-					{{# } }}
-					<p class='mui-ellipsis'>账号:{{data.username}}</p>
-				</div>
-			</a>
-		</script>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init();
@@ -99,23 +91,26 @@
 					}
 				});
 				window.addEventListener('userId',function(event){
-			        var id =  event.detail.id?event.detail.id:plus.storage.getLength()>0?1:0;
-			        user = plus.storage.getItem('$users') || '[]';
-			        data = JSON.parse(user);
-			        console.log(id);
+			        var id =  event.detail.id?event.detail.id:0;
+			        var u =  event.detail.u;
 			        if(id){
 			        	$('.mui-login').hide();
 						$('.mui-logout').show();
-			        	laytpl($('#userInfo').html()).render(data, function(html){
-							$('.zak-info').html(html);
-						});
+			        	mui.post('http://m.igouwu.la/index/user/get_user_info',{id:id},function(result){
+			        		if(result.status==1){
+			        			data = result.user;
+			        			var _nickname = data.nickname?data.nickname:data.username;
+			        			var _header = data.head?data.head:"images/logo.png";
+					        	$('#nickname').empty().text(_nickname);
+					        	$('#username').empty().text('账号:'+data.username);
+					        	$('#user-header').empty().html("<img class=\"mui-media-object mui-pull-left head-img\" src=\""+_header+"\" >");
+			        		}
+			        	});
 			        }else{
 			        	$('.mui-logout').hide();
 						$('.mui-login').show();
 			        }
-			       
 			    });
-			    
 			    $(document).on('click','#logout',function(){
 			    	var btnArray = ['是', '否'];
 					mui.confirm('您确定退出登录?', '', btnArray, function(e) {

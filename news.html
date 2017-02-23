@@ -20,12 +20,12 @@
 		  		</div>
 		  	</div>
 		  	<!--轮播图-->
-			<div id="slider" class="mui-slider" >
+			<!--<div id="slider" class="mui-slider" >
 				<div class="mui-slider-group mui-slider-loop">
 				</div>
 				<div class="mui-slider-indicator zak-indicator">
 				</div>
-			</div>
+			</div>-->
 			<!--子页面数据-->
 		</div>
 		<script src="js/mui.min.js"></script>
@@ -78,13 +78,13 @@
 					url: "page.html?id="+id,
 					id: "page",
 					styles: {
-						top: "267px",
+						top: "87px",
 						bottom: "0px"
 					}
 				}]
 			});
 			mui.plusReady(function() {
-				$.getJSONP('http://m.jswei.cn/index/publish/get_carousel',function(result){
+				$.getJSONP('http://m.igouwu.la/index/publish/get_carousel',function(result){
 					carousel = result.data;
 					indicator = carousel.length-2;
 					laytpl($('#carousel').html()).render(carousel, function(html){
@@ -97,7 +97,7 @@
 					  interval:5000
 					});
 				});
-				$.getJSONP('http://m.jswei.cn/index/publish/get_colunm?id='+id,function(result){
+				$.getJSONP('http://m.igouwu.la/index/publish/get_colunm?id='+id,function(result){
 					column = result.data;
 					//console.log($('.mui-control-item').width());
 					var width = result.data.length*70;
@@ -106,7 +106,7 @@
 						$('.zak-control-item').width(width).empty().html(html);
 					});
 				});
-				$.getJSONP('http://m.jswei.cn/index/publish/get_site',function(result){
+				$.getJSONP('http://m.igouwu.la/index/publish/get_site',function(result){
 					site = result.data;
 	                var gettpl = $('#title').html();
 					laytpl(gettpl).render(site, function(html){

@@ -45,13 +45,18 @@
     		var activeTab = subpages[0];
 	    	mui(".mui-bar-tab").on("tap","a",function() {
 	    		var targetTab = this.getAttribute("href");
+	    		var id =0;
 	    		if(targetTab == activeTab) {
 	    			return;
 	    		}
 	    		if(targetTab=='my.html'){
 	    			var my = plus.webview.getWebviewById('my.html');
-	    			var length = plus.storage.getLength();
-	    			mui.fire(my,'userId',{id:length});
+	    			if(plus.storage.getLength()){
+	    				var user = plus.storage.getItem('$users');
+		    			user = JSON.parse(user);
+		    			id = user.id;
+	    			}
+	    			mui.fire(my,'userId',{id:id});
 	    		}
 	    		plus.webview.show(targetTab);
 	    		plus.webview.hide(activeTab);
